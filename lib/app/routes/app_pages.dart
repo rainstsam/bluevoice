@@ -4,40 +4,65 @@
  * @Author: rainstsam
  * @Date: 2021-09-05 23:21:09
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-06 00:42:06
+ * @LastEditTime: 2021-09-16 02:53:01
  */
 import 'package:get/get.dart';
 
-import 'package:bluevoice/app/modules/configtask/bindings/configtask_binding.dart';
-import 'package:bluevoice/app/modules/configtask/views/configtask_view.dart';
-import 'package:bluevoice/app/modules/home/bindings/home_binding.dart';
-import 'package:bluevoice/app/modules/home/views/home_view.dart';
-import 'package:bluevoice/app/modules/splash/bindings/splash_binding.dart';
-import 'package:bluevoice/app/modules/splash/views/splash_view.dart';
-
+import 'package:bluevoice/app/modules/scandivice/index.dart';
+import 'package:bluevoice/app/modules/choicedivice/index.dart';
+import 'package:bluevoice/app/modules/tasklist/index.dart';
+import 'package:bluevoice/app/modules/addtask/index.dart';
+import 'package:bluevoice/app/modules/edittask/index.dart';
+import 'package:bluevoice/app/modules/recode/index.dart';
+import 'package:bluevoice/app/modules/play/index.dart';
+import 'package:bluevoice/app/modules/splash/index.dart';
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.SPLASH;
+  static const INITIAL = Paths.Tasklist;
 
-  static final routes = [
+  static final List<GetPage> routes = [
     GetPage(
-      name: _Paths.HOME,
-      page: () => HomeView(),
-      binding: HomeBinding(),
-    ),
-
-    GetPage(
-      name: _Paths.CONFIGTASK,
-      page: () => ConfigtaskView(),
-      binding: ConfigtaskBinding(),
-    ),
-    GetPage(
-      name: _Paths.SPLASH,
-      page: () => SplashView(),
+      name: Paths.Splash,
+      page: () => SplashPage(),
       binding: SplashBinding(),
+    ),
+    GetPage(
+      name: Paths.Scandivice,
+      page: () => ScandivicePage(),
+      binding: ScandiviceBinding(),
+    ),
+    GetPage(
+      name: Paths.Choicedivice,
+      page: () => ChoicedivicePage(),
+      binding: ChoicediviceBinding(),
+    ),
+    GetPage(
+      name: Paths.Tasklist,
+      page: () => TasklistPage(),
+      binding: TasklistBinding(),
+    ),
+    GetPage(
+      name: Paths.AddTask,
+      page: () => AddTaskPage(),
+      binding: AddTaskBinding(),
+    ),
+    GetPage(
+      name: Paths.EditTask,
+      page: () => EdittaskPage(),
+      binding: EdittaskBinding(),
+    ),
+    GetPage(
+      name: Paths.Recode,
+      page: () => RecodePage(),
+      binding: RecodeBinding(),
+    ),
+    GetPage(
+      name: Paths.Play,
+      page: () => PlayPage(),
+      binding: PlayBinding(),
     ),
   ];
 }

@@ -4,21 +4,18 @@
  * @Author: rainstsam
  * @Date: 2021-09-05 23:21:09
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-06 00:41:42
+ * @LastEditTime: 2021-09-12 00:50:58
  */
 part of 'app_pages.dart';
 // DO NOT EDIT. This is code generated via package:get_cli/get_cli.dart
 
-abstract class Routes {
-  Routes._();
-
-  static const HOME = _Paths.HOME;
-  static const CONFIGTASK = _Paths.CONFIGTASK;
-  static const SPLASH = _Paths.SPLASH;
-}
-
-abstract class _Paths {
-  static const HOME = '/home';
-  static const CONFIGTASK = '/configtask';
-  static const SPLASH = '/splash';
+abstract class Paths {
+  static const Splash = '/Splash';
+  static const Scandivice = '/Scandivice';
+  static const Choicedivice = '/Choicedivice';
+  static const Tasklist = '/Tasklist';
+  static const AddTask = '/Tasklist/AddTask';
+  static const EditTask = '/Tasklist/EditTask';
+  static const Recode = '/Tasklist/Recode';
+  static const Play = '/Tasklist/Play';
 }

@@ -1,3 +1,4 @@
 {
-  "eggHelper.serverPort": 40336
+  "eggHelper.serverPort": 40336,
+  "java.configuration.updateBuildConfiguration": "interactive"
 }
