@@ -15,11 +15,12 @@ dependencies:
   android_intent_plus: 2.0.0
   flutter_blue: 0.8.0
   platform: 3.0.2
-  path_provider: 2.0.3
+  path_provider:  ^1.0.0
   path: 1.8.0
-  sqflite: 2.0.0+4
-  dbutils: 4.0.1
+  # sqflite: 2.0.0+4
+  # dbutils: 4.0.1
   flutter_slidable: 0.6.0
+  flutter_sound: ^4.0.6
   flutter: 
     sdk: flutter
 
