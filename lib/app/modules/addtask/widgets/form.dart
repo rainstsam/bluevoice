@@ -4,7 +4,7 @@
  * @Author: rainstsam
  * @Date: 2021-09-13 23:03:43
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-16 05:07:20
+ * @LastEditTime: 2021-09-17 23:20:43
  */
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,7 +34,7 @@ class AddTaskForm extends GetView<AddTaskController> {
               prefixIcon: Icon(Icons.details)),
         ),
         Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-          FLFlatButton(
+          FLRaisedButton(
             // expanded: true,
             color: Color(0xFF0F4C81),
             textColor: Colors.white,
@@ -42,8 +42,9 @@ class AddTaskForm extends GetView<AddTaskController> {
             onPressed: () => controller.goHome(),
           ),
           SizedBox(width: 60),
-          FLFlatButton(
+          FLRaisedButton(
             // expanded: true,
+
             color: Color(0xFF0F4C81),
             textColor: Colors.white,
             child: Text('添加任务', textAlign: TextAlign.center),

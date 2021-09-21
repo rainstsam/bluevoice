@@ -4,11 +4,11 @@
  * @Author: rainstsam
  * @Date: 2021-09-10 23:42:18
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-13 18:47:47
+ * @LastEditTime: 2021-09-17 07:37:40
  */
 import 'package:get/get.dart';
-import 'package:bluevoice/app/data/databasehelper.dart';
-import 'package:bluevoice/app/data/task.dart';
+// import 'package:bluevoice/app/data/databasehelper.dart';
+// import 'package:bluevoice/app/data/task.dart';
 import 'package:bluevoice/app/routes/app_pages.dart';
 
 import 'index.dart';
@@ -31,7 +31,8 @@ class EdittaskController extends GetxController {
       "消息",
     );
   }
-    void goHome() {
+
+  void goHome() {
     Get.offNamed(Paths.Tasklist);
   }
 

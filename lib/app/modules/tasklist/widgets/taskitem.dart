@@ -4,40 +4,40 @@
  * @Author: rainstsam
  * @Date: 2021-09-13 14:47:39
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-16 06:31:01
+ * @LastEditTime: 2021-09-21 21:24:31
  */
 import 'package:bluevoice/app/routes/app_pages.dart';
-import 'package:flui/flui.dart';
+import 'package:bluevoice/app/data/task_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import '../index.dart';
 
 class TaskItem extends GetView<TasklistController> {
-  late int id;
-  late String taskname;
-  late String taskdetail;
-
-  TaskItem(item) {
-    this.id = item.id;
-
-    this.taskname = item.taskname;
-    this.taskdetail = item.taskdetail;
-  }
+  final Task task;
+  TaskItem({
+    Key key,
+    @required this.task,
+  })  : super(key: key);
   @override
   Widget build(BuildContext context) {
-    var idstr = (id + 1).toString();
-    var args = {'id': id, 'taskname': taskname, 'taskdetail': taskdetail};
-    if (this.taskname == 'taskname') {
-      return FLFlatButton(
-        expanded: true,
-        color: Color(0xFF0F4C81),
-        textColor: Colors.white,
-        child: Text('删除所有任务', textAlign: TextAlign.center),
-        onPressed: () => controller.addTask(),
-      );
-    } else {}
+     return Container(
+      height: 80,
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black.withOpacity(0.03),
+              offset: Offset(0, 2),
+              blurRadius: 5,
+              spreadRadius: 1)
+        ],
+      ),
+      child: _buildRow(context),
+    );
 
+    Widget _buildRow(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Slidable(
@@ -65,11 +65,11 @@ class TaskItem extends GetView<TasklistController> {
               caption: '录制',
               color: Colors.indigo,
               icon: Icons.record_voice_over_outlined,
-              onTap: () => Get.offNamed(Paths.Recode),
+              onTap: () => Get.offNamed(Paths.Recode, arguments: args),
             ),
           ]),
     );
   }
 }
 
-class ActionPane {}
+

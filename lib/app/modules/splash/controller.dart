@@ -4,7 +4,7 @@
  * @Author: rainstsam
  * @Date: 2021-09-10 23:57:45
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-11 21:54:37
+ * @LastEditTime: 2021-09-18 15:14:33
  */
 import 'package:get/get.dart';
 import 'package:system_shortcuts/system_shortcuts.dart';
@@ -44,8 +44,8 @@ class SplashController extends GetxController {
   @override
   void onReady() async {
     super.onReady();
-
     await Future.delayed(Duration(seconds: 3));
+    // await SystemShortcuts.
     Get.offNamed(Paths.Scandivice);
     // async 拉取数据
   }

@@ -4,11 +4,11 @@
  * @Author: rainstsam
  * @Date: 2021-09-10 23:40:45
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-16 06:35:40
+ * @LastEditTime: 2021-09-17 07:33:59
  */
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flui/flui.dart';
+// import 'package:flui/flui.dart';
 import 'index.dart';
 import 'widgets/widgets.dart';
 
