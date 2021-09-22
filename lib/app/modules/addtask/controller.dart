@@ -4,17 +4,24 @@
  * @Author: rainstsam
  * @Date: 2021-09-10 23:40:45
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-17 07:33:43
+ * @LastEditTime: 2021-09-22 01:24:07
  */
+import 'package:bluevoice/app/data/priority.dart';
+import 'package:bluevoice/app/data/task_repository.dart';
+import 'package:bluevoice/common/utils/extension/date_extension.dart';
+import 'package:bluevoice/common/utils/extension/get_extension.dart';
 import 'package:get/get.dart';
-// import 'package:bluevoice/app/data/databasehelper.dart';
-import 'package:bluevoice/app/data/task.dart';
+import 'package:flutter/material.dart';
+
+import 'package:bluevoice/app/data/task_database.dart';
+import 'package:bluevoice/app/modules/tasklist/controller.dart';
+
 import 'package:bluevoice/app/routes/app_pages.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'index.dart';
 
 class AddTaskController extends GetxController {
-  AddTaskController();
+  final TaskRepository _taskRepository = Get.find<TaskRepository>();
+  // AddTaskController();
 
   /// 响应式成员变量
 
@@ -22,43 +29,44 @@ class AddTaskController extends GetxController {
 
   /// 成员变量
 
+  /// 局部更新id
+  final String updateDateId = 'update_date';
+  final String updatePriorityId = 'update_priority';
+
+  /// 表格key
+  final formKey = GlobalKey<FormState>();
+
+  /// 日期
+  final dateTimeController =
+      TextEditingController(text: DateTime.now().format());
+  late DateTime _dateTime;
+  late String _title;
+  late String _content;
+  late int _priority;
+
   /// 事件
 
-  // tap
-  void handleTap(int index) {
-    Get.snackbar(
-      "标题",
-      "消息",
-    );
-  }
-
-  void handleAddTask(String taskname, String taskdetail) async {
-    var task = TaskItem.fromJson(
-        {"id": state.id, "taskdetail": taskdetail, "taskname": taskname});
-    var prefs = await SharedPreferences.getInstance();
-    var taskitem = task.toString();
-    var tasklist = prefs.getStringList('tasklist');
-    print(tasklist);
-    if (tasklist == null) {
-      tasklist = [taskitem];
-    } else {
-      tasklist.add(taskitem);
-    }
-    print(tasklist);
-    state.id++;
-    prefs.setInt('taskcount', state.id);
-    prefs.setStringList('tasklist', tasklist);
-    // var task = {"id": state.id, "taskdetail": taskdetail, "taskname": taskname};
-    // var db = await DatabaseHelper.instance.database;
-    // await db!.insert('task', task);
-    Get.offNamed(Paths.Tasklist);
-  }
-
-  void handleDel() async {
-    var prefs = await SharedPreferences.getInstance();
-    prefs.remove('taskcount');
-    prefs.remove('tasklist');
-  }
+  // void handleAddTask(String taskname, String taskdetail) async {
+  //   var task = TaskItem.fromJson(
+  //       {"id": state.id, "taskdetail": taskdetail, "taskname": taskname});
+  //   var prefs = await SharedPreferences.getInstance();
+  //   var taskitem = task.toString();
+  //   var tasklist = prefs.getStringList('tasklist');
+  //   print(tasklist);
+  //   if (tasklist == null) {
+  //     tasklist = [taskitem];
+  //   } else {
+  //     tasklist.add(taskitem);
+  //   }
+  //   print(tasklist);
+  //   state.id++;
+  //   prefs.setInt('taskcount', state.id);
+  //   prefs.setStringList('tasklist', tasklist);
+  //   // var task = {"id": state.id, "taskdetail": taskdetail, "taskname": taskname};
+  //   // var db = await DatabaseHelper.instance.database;
+  //   // await db!.insert('task', task);
+  //   Get.offNamed(Paths.Tasklist);
+  // }
 
   /// 生命周期
 
@@ -67,6 +75,8 @@ class AddTaskController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    _priority = priorities[0];
+    _dateTime = DateTime.now();
     // new 对象
     // 初始静态数据
   }
@@ -77,13 +87,41 @@ class AddTaskController extends GetxController {
   @override
   void onReady() async {
     super.onReady();
-    var prefs = await SharedPreferences.getInstance();
-    state.id = prefs.getInt('taskcount');
-    // async 拉取数据
+  }
+
+  void saveTitle(String value) {
+    _title = value;
+  }
+
+  void saveContent(String value) {
+    _content = value;
+  }
+
+  void changePriority(String value) {
+    _priority = priorities[prioritiesStr.indexOf(value)];
   }
 
   void goHome() {
     Get.offNamed(Paths.Tasklist);
+  }
+
+  void submit() async {
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+      try {
+        Get.loading();
+        Task task = await _taskRepository.addTask(_title,
+            content: _content, date: _dateTime.format(), priority: _priority);
+        Get.dismiss();
+        TasklistController controller = Get.find<TasklistController>();
+        controller.addNewTask(task);
+        Get.back();
+      } catch (e) {
+        print('submit==$e');
+        Get.dismiss();
+        Get.snackbar('Error', e.toString());
+      }
+    }
   }
 
   ///在 [onDelete] 方法之前调用。 [onClose] 可能用于

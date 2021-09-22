@@ -4,17 +4,19 @@
  * @Author: rainstsam
  * @Date: 2021-09-13 19:10:34
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-13 21:03:23
+ * @LastEditTime: 2021-09-22 01:25:47
  */
+import 'package:bluevoice/app/data/task_model.dart';
+import 'package:bluevoice/app/data/task_repository.dart';
 import 'package:get/get.dart';
-import 'package:bluevoice/app/data/databasehelper.dart';
-import 'package:bluevoice/app/data/task.dart';
+
 import 'package:bluevoice/app/routes/app_pages.dart';
 
 import 'index.dart';
 
 class TaskdetailController extends GetxController {
   TaskdetailController();
+  final TaskRepository _taskRepository = Get.find<TaskRepository>();
 
   /// 响应式成员变量
 
@@ -23,14 +25,96 @@ class TaskdetailController extends GetxController {
   /// 成员变量
 
   /// 事件
+  // Future<TaskModel?> _load() async {
+  //   try {
+  //     TaskModel model = await _taskRepository.getTask(pageNum: _pageNum);
+  //     return model;
+  //   } catch (e) {
+  //     print('_load' + e.toString());
+  //     return null;
+  //   }
+  // }
 
-  // tap
-  void handleTap(int index) {
-    Get.snackbar(
-      "标题",
-      "消息",
-    );
-  }
+  // onRefresh() async {
+  //   _pageNum = 1;
+  //   TaskModel model = await _load();
+  //   if (model == null) {
+  //     refreshController.refreshFailed();
+  //     return;
+  //   } else {
+  //     refreshController.refreshCompleted();
+  //   }
+  //   if (model.over == true) {
+  //     refreshController.loadNoData();
+  //   }
+
+  //   if (model.datas?.isNotEmpty == true) {
+  //     _tasks.clear();
+  //     _tasks.addAll(model.datas);
+  //     _pageNum++;
+  //     update();
+  //   }
+  // }
+
+  // onLoadMore() async {
+  //   TaskModel model = await _load();
+  //   if (model == null) {
+  //     refreshController.loadFailed();
+  //     return;
+  //   }
+  //   if (model.over == true) {
+  //     refreshController.loadNoData();
+  //   } else {
+  //     refreshController.loadComplete();
+  //   }
+
+  //   if (model.datas?.isNotEmpty == true) {
+  //     _tasks.addAll(model.datas);
+  //     _pageNum++;
+  //     update();
+  //   }
+  // }
+
+  // addNewTask(Task task) {
+  //   _tasks.insert(0, task);
+  //   update();
+  // }
+
+  // deleteTask(int index) async {
+  //   Get.loading();
+  //   try {
+  //     bool success = await _taskRepository.deleteTask(_tasks[index].id);
+  //     if (success) {
+  //       _tasks.removeAt(index);
+  //       update();
+  //     }
+  //   } catch (e) {
+  //     print('deleteTask' + e.toString());
+  //   }
+  //   Get.dismiss();
+
+  //   // update();
+  // }
+
+  // modifyTaskStatus(Task task) async {
+  //   Get.loading();
+  //   try {
+  //     await _taskRepository.modifyTaskStatus(task);
+  //     var newTask = _tasks.firstWhere(
+  //         (element) => element.id == task.id && element.status != task.status,
+  //         orElse: () => null);
+  //     if (newTask != null) {
+  //       newTask.status = task.status;
+  //       // print("modifyTaskStatus==${newTask.status}");
+  //       // int index = _tasks.indexOf(newTask);
+  //       // print("modifyTaskStatus==${_tasks[index]}");
+  //     }
+  //     update();
+  //   } catch (e) {
+  //     print('modifyTaskStatus' + e.toString());
+  //   }
+  //   Get.dismiss();
+  // }
 
   void goHome() {
     Get.offNamed(Paths.Tasklist);

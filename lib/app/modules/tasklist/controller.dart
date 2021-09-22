@@ -4,13 +4,17 @@
  * @Author: rainstsam
  * @Date: 2021-09-10 23:39:44
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-16 04:58:23
+ * @LastEditTime: 2021-09-22 10:12:26
  */
 
+import 'package:bluevoice/app/data/task_database.dart';
+import 'package:bluevoice/app/data/task_model.dart';
+import 'package:bluevoice/app/data/task_repository.dart';
+import 'package:bluevoice/common/utils/extension/get_extension.dart';
 import 'package:get/get.dart';
-import 'dart:convert';
-// import 'package:bluevoice/app/data/databasehelper.dart';
-import 'package:bluevoice/app/data/task.dart';
+
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 import 'package:bluevoice/app/routes/app_pages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,14 +24,110 @@ import 'index.dart';
 class TasklistController extends GetxController {
   TasklistController();
 
+  final RefreshController refreshController =
+      RefreshController(initialRefresh: true);
+
   /// 响应式成员变量
 
   final state = TasklistState();
 
   /// 成员变量
+  final TaskRepository _taskRepository = Get.find<TaskRepository>();
+  int _pageNum = 1;
 
   /// 事件
-  ///
+
+  Future<TaskModel?> _load() async {
+    try {
+      TaskModel model = await _taskRepository.getTask(pageNum: _pageNum);
+      return model;
+    } catch (e) {
+      print('_load' + e.toString());
+      return null;
+    }
+  }
+
+  onRefresh() async {
+    _pageNum = 1;
+    TaskModel? model = await _load();
+    if (model == null) {
+      refreshController.refreshFailed();
+      return;
+    } else {
+      refreshController.refreshCompleted();
+    }
+    if (model.over == true) {
+      refreshController.loadNoData();
+    }
+
+    if (model.datas?.isNotEmpty == true) {
+      state.tasks.clear();
+      state.tasks.addAll(model.datas);
+      _pageNum++;
+      update();
+    }
+  }
+
+  onLoadMore() async {
+    TaskModel? model = await _load();
+    if (model == null) {
+      refreshController.loadFailed();
+      return;
+    }
+    if (model.over == true) {
+      refreshController.loadNoData();
+    } else {
+      refreshController.loadComplete();
+    }
+
+    if (model.datas?.isNotEmpty == true) {
+      state.tasks.addAll(model.datas);
+      _pageNum++;
+      update();
+    }
+  }
+
+  addNewTask(Task task) {
+    state.tasks.insert(0, task);
+    update();
+  }
+
+  deleteTask(int index) async {
+    Get.loading();
+    try {
+      bool success = await _taskRepository.deleteTask(state.tasks[index].id);
+      if (success) {
+        state.tasks.removeAt(index);
+        update();
+      }
+    } catch (e) {
+      print('deleteTask' + e.toString());
+    }
+    Get.dismiss();
+
+    // update();
+  }
+
+  modifyTaskStatus(Task task) async {
+    Get.loading();
+    try {
+      await _taskRepository.modifyTaskStatus(task);
+      var newTask = state.tasks.firstWhere(
+          (element) => element.id == task.id && element.status != task.status,
+          orElse: () => null);
+      if (newTask != null) {
+        newTask.status = task.status;
+        // print("modifyTaskStatus==${newTask.status}");
+        // int index = state.tasks.indexOf(newTask);
+        // print("modifyTaskStatus==${_tasks[index]}");
+      }
+      update();
+    } catch (e) {
+      print('modifyTaskStatus' + e.toString());
+    }
+    Get.dismiss();
+  }
+
   // tap
   void handleTap(int index) {
     Get.snackbar(
@@ -71,27 +171,7 @@ class TasklistController extends GetxController {
   void onReady() async {
     super.onReady();
     var prefs = await SharedPreferences.getInstance();
-    if (prefs.getInt('taskcount') == null) {
-      prefs.setInt('taskcount', 0);
-    } else {
-      // ignore: unused_local_variable
-      // var defult = {"id": 500, "taskname": 'taskname', "taskdetail": 'taskdetail'};
-      // List< dynamic> list = List<dynamic>.filled(500, defult, growable: true);
-      List<dynamic> list=[{"id": 500, "taskname": 'taskname', "taskdetail": 'taskdetail'}];
-
-      print(prefs.getInt('taskcount'));
-      prefs.getStringList('tasklist')!.forEach((element) {
-        var taskMap = json.decode(element);
-        print(element);
-        // TaskItem task = TaskItem.fromJson(taskMap);
-        // print(state.tasklist);
-        list.add(taskMap);
-      });
-      state.tasklist = TasklistItems.fromJson({"items": list});
-    }
     prefs.setString('AudioSource', state.AudioSource);
-
-    // asyncLoadTaskList();
 
     // async 拉取数据
   }

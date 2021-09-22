@@ -6,7 +6,7 @@
  * @Author: rainstsam
  * @Date: 2021-09-05 23:21:08
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-19 07:30:57
+ * @LastEditTime: 2021-09-22 10:51:59
  */
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app/routes/app_pages.dart';
-// import 'package:bluevoice/common/service/global_config.dart';
+import 'package:bluevoice/common/service/global_config.dart';
 
 Future<void> main() async {
   SharedPreferences.setMockInitialValues({});
@@ -30,7 +30,7 @@ Future<void> main() async {
   //   });
   // }
 
-  // await Get.putAsync(() => GlobalConfigService().init());
+  await Get.putAsync(() => GlobalConfigService().init());
   runApp(
     GetMaterialApp(
       title: "Application",

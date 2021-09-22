@@ -4,7 +4,7 @@
  * @Author: rainstsam
  * @Date: 2021-09-10 22:15:02
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-13 16:55:04
+ * @LastEditTime: 2021-09-21 23:21:24
  */
 library utils;
 
@@ -15,4 +15,5 @@ export 'android.dart';
 export 'iconfont.dart';
 export 'date.dart';
 export 'connect.dart';
+export 'extension/date_extension.dart';
 // export 'sqlite_db.dart';

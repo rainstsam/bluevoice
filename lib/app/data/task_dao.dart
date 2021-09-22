@@ -4,7 +4,7 @@
  * @Author: rainstsam
  * @Date: 2021-09-21 20:52:59
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-21 20:57:43
+ * @LastEditTime: 2021-09-21 21:46:15
  */
 import 'package:moor/moor.dart';
 import 'task_database.dart';
@@ -19,7 +19,7 @@ class TaskDao extends DatabaseAccessor<TaskDatabase> with _$TaskDaoMixin {
 
   ///imit查询来限制返回的结果数量
   ///offset偏移量
-  Future<List<Task>> getTasks(int limit, {int offset}) {
+  Future<List<Task>> getTasks(int limit, {required int offset}) {
     return (select(tasks)..limit(limit, offset: offset)).get();
   }
 
@@ -42,7 +42,7 @@ class TaskDao extends DatabaseAccessor<TaskDatabase> with _$TaskDaoMixin {
   }
 
   Future<int> createOrUpdateUser(String title,
-      {String content, String date, int type = 0, int priority = 0}) {
+      {String? content, String? date, int type = 0, int priority = 0}) {
     return into(tasks).insertOnConflictUpdate(TasksCompanion(
       title: Value(title),
       content: Value(content),
