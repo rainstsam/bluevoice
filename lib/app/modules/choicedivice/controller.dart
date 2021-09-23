@@ -1,3 +1,12 @@
+/*
+ * @Descripttion: 
+ * @version: 0.1.0
+ * @Author: rainstsam
+ * @Date: 2021-09-10 23:34:43
+ * @LastEditors: rainstsam
+ * @LastEditTime: 2021-09-23 06:31:11
+ */
+import 'package:bluevoice/app/routes/app_pages.dart';
 import 'package:get/get.dart';
 
 import 'index.dart';
@@ -39,6 +48,10 @@ class ChoicediviceController extends GetxController {
   void onReady() {
     super.onReady();
     // async 拉取数据
+  }
+
+  void goHome() {
+    Get.offNamed(Paths.Tasklist);
   }
 
   ///在 [onDelete] 方法之前调用。 [onClose] 可能用于

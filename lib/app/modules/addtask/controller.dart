@@ -4,9 +4,9 @@
  * @Author: rainstsam
  * @Date: 2021-09-10 23:40:45
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-22 01:24:07
+ * @LastEditTime: 2021-09-22 22:27:03
  */
-import 'package:bluevoice/app/data/priority.dart';
+
 import 'package:bluevoice/app/data/task_repository.dart';
 import 'package:bluevoice/common/utils/extension/date_extension.dart';
 import 'package:bluevoice/common/utils/extension/get_extension.dart';
@@ -39,10 +39,9 @@ class AddTaskController extends GetxController {
   /// 日期
   final dateTimeController =
       TextEditingController(text: DateTime.now().format());
-  late DateTime _dateTime;
-  late String _title;
-  late String _content;
-  late int _priority;
+  DateTime? _dateTime;
+  String? _title;
+  String? _content;
 
   /// 事件
 
@@ -75,8 +74,8 @@ class AddTaskController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _priority = priorities[0];
     _dateTime = DateTime.now();
+
     // new 对象
     // 初始静态数据
   }
@@ -91,14 +90,12 @@ class AddTaskController extends GetxController {
 
   void saveTitle(String value) {
     _title = value;
+    print(_title);
   }
 
   void saveContent(String value) {
     _content = value;
-  }
-
-  void changePriority(String value) {
-    _priority = priorities[prioritiesStr.indexOf(value)];
+    print(_content);
   }
 
   void goHome() {
@@ -108,20 +105,29 @@ class AddTaskController extends GetxController {
   void submit() async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
+      // }
       try {
         Get.loading();
-        Task task = await _taskRepository.addTask(_title,
-            content: _content, date: _dateTime.format(), priority: _priority);
+        Task task = await _taskRepository.addTask(_title!,
+            content: _content, date: _dateTime!.format());
+        print(task.toJsonString());
         Get.dismiss();
         TasklistController controller = Get.find<TasklistController>();
         controller.addNewTask(task);
-        Get.back();
+        // Get.snackbar('Error', task.toJsonString());
+        goHome();
       } catch (e) {
         print('submit==$e');
         Get.dismiss();
         Get.snackbar('Error', e.toString());
+        // Get.snackbar(_title!, task.toString());
       }
     }
+    // Get.loading();
+    // Task task = await _taskRepository.addTask(_title!,
+    //     content: _content, date: _dateTime!.format());
+    // Get.dismiss();
+    // print(task);
   }
 
   ///在 [onDelete] 方法之前调用。 [onClose] 可能用于

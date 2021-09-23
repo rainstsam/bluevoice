@@ -19,7 +19,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'stroge_file.dart';
 import 'active_codec.dart';
@@ -31,7 +34,7 @@ class UtilRecorder {
 
   /// primary recording module
   FlutterSoundRecorder? recorderModule;
-  
+
   /// secondary recording module used to show that two recordings can occur
   /// concurrently.
   FlutterSoundRecorder? recorderModule_2; // Used if REENTRANCE_CONCURENCY
@@ -42,7 +45,7 @@ class UtilRecorder {
   }
 
   UtilRecorder._internal() {
-    recorderModule = FlutterSoundRecorder();//To super
+    recorderModule = FlutterSoundRecorder(); //To super
   }
 
   /// `true` if we are currently recording.
@@ -85,10 +88,21 @@ class UtilRecorder {
     try {
       /// TODO put this back iin
       /// await PlayerState().stopPlayer();
-
+      var prefs = await SharedPreferences.getInstance();
+      var Source = prefs.getString('AudioSource');
+      var audioSource;
+      if (Source == 'mic') {
+        audioSource = AudioSource.microphone;
+      } else if (Source == 'bluemic') {
+        audioSource = AudioSource.bluetoothHFP;
+      } else if (Source == 'blue') {
+        audioSource = AudioSource.defaultSource;
+      }
+        var task = Get.arguments;
       var track =
-          Track(trackPath: await strogeFile(), codec: ActiveCodec().codec!);
-      await recorderModule!.startRecorder(toFile: track.trackPath);
+          Track(trackPath: await strogeFile(task.title,suffix:'aac'), codec: ActiveCodec().codec!);
+      await recorderModule!
+          .startRecorder(toFile: track.trackPath, audioSource: audioSource);
 
       //Log.d('startRecorder: $track');
 

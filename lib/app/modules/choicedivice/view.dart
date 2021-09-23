@@ -4,7 +4,7 @@
  * @Author: rainstsam
  * @Date: 2021-09-10 23:34:43
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-18 06:49:47
+ * @LastEditTime: 2021-09-23 06:29:40
  */
 import 'dart:math';
 
@@ -71,12 +71,15 @@ class BluetoothOffScreen extends StatelessWidget {
   }
 }
 
-class FindDevicesScreen extends StatelessWidget {
+class FindDevicesScreen extends GetView<ChoicediviceController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Find Devices'),
+        centerTitle: true,
+        leading: IconButton(
+            onPressed: controller.goHome, icon: Icon(Icons.arrow_back)),
+        title: Text('扫描监听设备'),
       ),
       body: RefreshIndicator(
         onRefresh: () =>

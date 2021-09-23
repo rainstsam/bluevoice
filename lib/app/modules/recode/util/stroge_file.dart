@@ -4,7 +4,7 @@
  * @Author: rainstsam
  * @Date: 2021-09-19 14:11:50
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-21 10:14:36
+ * @LastEditTime: 2021-09-23 07:42:21
  */
 /*
  * Copyright 2018, 2019, 2020 Dooboolab.
@@ -32,7 +32,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 /// Creates an path to a temporary file.
-Future<String> strogeFile({String? suffix}) async {
+Future<String> strogeFile(String addpath, {String? suffix}) async {
   suffix ??= 'tmp';
 
   if (!suffix.startsWith('.')) {
@@ -41,8 +41,8 @@ Future<String> strogeFile({String? suffix}) async {
   var uuid = Uuid();
   String path;
   if (!kIsWeb) {
-    var tmpDir = await getTemporaryDirectory();
-    path = '${join(tmpDir.path, uuid.v4())}$suffix';
+    var tmpDir = await getExternalStorageDirectory();
+    path = '${join(tmpDir!.path, addpath)}$suffix';
     var parent = dirname(path);
     Directory(parent).createSync(recursive: true);
   } else {

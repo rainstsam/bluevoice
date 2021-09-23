@@ -4,7 +4,7 @@
  * @Author: rainstsam
  * @Date: 2021-09-21 20:15:20
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-21 23:40:05
+ * @LastEditTime: 2021-09-22 17:29:54
  */
 import 'dart:io';
 
@@ -24,33 +24,21 @@ part 'task_database.g.dart';
 // this will generate a table called "tasks" for us. The rows of that table will
 // be represented by a class called "Task".
 class Tasks extends Table {
-  // 可空类型
-  IntColumn get completeDate => integer().autoIncrement()();
-  TextColumn get completeDateStr => text().nullable()();
-  TextColumn get content => text().nullable()();
+  // 主键
+  IntColumn get id => integer().nullable().autoIncrement()();
+  TextColumn get title => text()();
 
-  // // 为空自动生成默认值
-  // IntColumn get date =>
-  //     integer().clientDefault(() => DateTime.now().millisecondsSinceEpoch)();
+  // 可空类型
+  IntColumn get completeDate => integer().nullable()();
+ 
+  TextColumn get content => text().nullable()();
+  TextColumn get completeDateStr => text().nullable()();
 
   // 为空自动生成默认值
   TextColumn get dateStr =>
       text().nullable().clientDefault(() => DateTime.now().format())();
 
-  // 主键
-  IntColumn get id => integer().nullable().autoIncrement()();
-
-  // 为空自动生成默认值
-  IntColumn get priority => integer().nullable().withDefault(Constant(0))();
-
-  // 为空自动生成默认值
-  IntColumn get status => integer().nullable().withDefault(Constant(0))();
-
-  TextColumn get title => text()();
-
-  IntColumn get type => integer().withDefault(Constant(0))();
-
-  IntColumn get userId => integer().nullable()();
+  
 }
 
 @UseMoor(tables: [Tasks], daos: [TaskDao])

@@ -4,7 +4,7 @@
  * @Author: rainstsam
  * @Date: 2021-09-21 20:52:59
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-21 21:46:15
+ * @LastEditTime: 2021-09-22 17:38:51
  */
 import 'package:moor/moor.dart';
 import 'task_database.dart';
@@ -35,6 +35,10 @@ class TaskDao extends DatabaseAccessor<TaskDatabase> with _$TaskDaoMixin {
     return (select(tasks)..where((t) => t.id.equals(id))).getSingle();
   }
 
+  Future<Task> getTaskByTitle(String title) {
+    return (select(tasks)..where((t) => t.title.equals(title))).getSingle();
+  }
+
   Future<bool> updateTask(Task entry) {
     TasksCompanion();
 
@@ -42,13 +46,13 @@ class TaskDao extends DatabaseAccessor<TaskDatabase> with _$TaskDaoMixin {
   }
 
   Future<int> createOrUpdateUser(String title,
-      {String? content, String? date, int type = 0, int priority = 0}) {
+      {String? content, String? date}) {
     return into(tasks).insertOnConflictUpdate(TasksCompanion(
       title: Value(title),
       content: Value(content),
       dateStr: Value(date),
-      type: Value(type),
-      priority: Value(priority),
+      // type: Value(type),
+      // priority: Value(priority),
     ));
   }
 
@@ -68,18 +72,12 @@ class TaskDao extends DatabaseAccessor<TaskDatabase> with _$TaskDaoMixin {
     return (delete(tasks)..where((t) => t.id.equals(id))).go();
   }
 
-  Future<int> deleteTask(Task entry) {
-    return delete(tasks).delete(entry);
+  Future<int> deleteTaskByTitle(String title) {
+    return (delete(tasks)..where((t) => t.title.equals(title))).go();
   }
 
-  Future<Task> modifyStatusByid(int id, int status) async {
-    // into(tasks).up
-    Task task = await getTaskById(id);
-    task.copyWith(
-      status: status,
-    );
-    await updateTask(task);
-    return task;
+  Future<int> deleteTask(Task entry) {
+    return delete(tasks).delete(entry);
   }
 
   Future<bool> modifyTask(Task task) {

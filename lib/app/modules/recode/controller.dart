@@ -6,7 +6,7 @@
  * @Author: rainstsam
  * @Date: 2021-09-10 23:49:04
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-21 14:13:04
+ * @LastEditTime: 2021-09-23 07:44:16
  */
 
 import 'dart:io';
@@ -50,7 +50,7 @@ class RecodeController extends GetxController {
       ActiveCodec().setCodec(withUI: false, codec: Codec.aacADTS);
       state.initialized = true;
     }
-  if (!kIsWeb) {
+    if (!kIsWeb) {
       var status = Permission.microphone.request();
       status.then((stat) {
         if (stat != PermissionStatus.granted) {
@@ -58,7 +58,8 @@ class RecodeController extends GetxController {
               'Microphone permission not granted');
         }
       });
-    }}
+    }
+  }
 
   void goHome() {
     Get.offNamed(Paths.Tasklist);
@@ -82,10 +83,12 @@ class RecodeController extends GetxController {
   @override
   void onReady() async {
     super.onReady();
-    var path = await strogeFile(suffix: 'aac');
+    var task = Get.arguments;
+    var path = await strogeFile(task.title,suffix: 'aac');
     var track = new Track(trackPath: path);
     state.track = track;
-    print(track.trackPath);
+
+    print(task.toString());
     // async 拉取数据
 
     // if ((await getTemporaryDirectory() != null)) {

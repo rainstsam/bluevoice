@@ -4,7 +4,7 @@
  * @Author: rainstsam
  * @Date: 2021-09-10 23:39:44
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-18 15:22:56
+ * @LastEditTime: 2021-09-23 00:15:09
  */
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,7 +32,13 @@ class TasklistPage extends GetView<TasklistController> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  TaskList(),
+                  Container(
+                                        height: 600,
+                    color: Colors.grey[50],
+                      child: SingleChildScrollView(
+
+                    child: TaskList(),
+                  )),
                   FLRaisedButton(
                     expanded: true,
                     color: Color(0xFF0F4C81),
