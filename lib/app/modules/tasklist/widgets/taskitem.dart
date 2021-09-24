@@ -4,7 +4,7 @@
  * @Author: rainstsam
  * @Date: 2021-09-13 14:47:39
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-23 00:37:55
+ * @LastEditTime: 2021-09-24 01:27:04
  */
 import 'package:bluevoice/app/routes/app_pages.dart';
 import 'package:bluevoice/app/data/task_database.dart';
@@ -82,11 +82,11 @@ class TaskItem extends GetView<TasklistController> {
                             ?.copyWith(fontSize: 14, color: Colors.blue)),
                   ]),
                   SizedBox(
-                    height: 5,
+                    height: 4,
                   ),
                   Text(task.content!,
                       style: Theme.of(context).textTheme.caption?.copyWith(
-                            fontSize: 14,
+                            fontSize: 12,
                           )),
                 ],
               ),
@@ -129,7 +129,7 @@ class TaskItem extends GetView<TasklistController> {
             caption: '详情',
             color: Colors.indigo,
             icon: Icons.details,
-            onTap: () => Get.offNamed(Paths.EditTask, arguments: task),
+            onTap: () => Get.offNamed(Paths.Taskdetail, arguments: task),
           ),
         ],
       ),

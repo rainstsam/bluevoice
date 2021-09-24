@@ -4,7 +4,7 @@
  * @Author: rainstsam
  * @Date: 2021-09-05 23:21:09
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-12 00:50:58
+ * @LastEditTime: 2021-09-23 23:18:57
  */
 part of 'app_pages.dart';
 // DO NOT EDIT. This is code generated via package:get_cli/get_cli.dart
@@ -18,4 +18,5 @@ abstract class Paths {
   static const EditTask = '/Tasklist/EditTask';
   static const Recode = '/Tasklist/Recode';
   static const Play = '/Tasklist/Play';
+  static const Taskdetail = '/Tasklist/Tasedetail';
 }

@@ -4,7 +4,7 @@
  * @Author: rainstsam
  * @Date: 2021-09-19 14:11:50
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-23 07:42:21
+ * @LastEditTime: 2021-09-23 23:33:56
  */
 /*
  * Copyright 2018, 2019, 2020 Dooboolab.
@@ -38,11 +38,11 @@ Future<String> strogeFile(String addpath, {String? suffix}) async {
   if (!suffix.startsWith('.')) {
     suffix = '.$suffix';
   }
-  var uuid = Uuid();
+  // var uuid = Uuid();
   String path;
   if (!kIsWeb) {
-    var tmpDir = await getExternalStorageDirectory();
-    path = '${join(tmpDir!.path, addpath)}$suffix';
+    var tmpDir = await getApplicationDocumentsDirectory();
+    path = '${join(tmpDir.path, addpath)}$suffix';
     var parent = dirname(path);
     Directory(parent).createSync(recursive: true);
   } else {

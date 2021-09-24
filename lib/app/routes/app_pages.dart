@@ -4,8 +4,9 @@
  * @Author: rainstsam
  * @Date: 2021-09-05 23:21:09
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-23 08:09:15
+ * @LastEditTime: 2021-09-24 01:47:06
  */
+import 'package:bluevoice/app/modules/splash/index.dart';
 import 'package:get/get.dart';
 
 import 'package:bluevoice/app/modules/scandivice/index.dart';
@@ -15,13 +16,13 @@ import 'package:bluevoice/app/modules/addtask/index.dart';
 import 'package:bluevoice/app/modules/edittask/index.dart';
 import 'package:bluevoice/app/modules/recode/index.dart';
 import 'package:bluevoice/app/modules/play/index.dart';
-import 'package:bluevoice/app/modules/splash/index.dart';
+import 'package:bluevoice/app/modules/taskdetail/index.dart';
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Paths.Tasklist;
+  static const INITIAL = Paths.Splash;
 
   static final List<GetPage> routes = [
     GetPage(
@@ -63,6 +64,11 @@ class AppPages {
       name: Paths.Play,
       page: () => PlayPage(),
       binding: PlayBinding(),
+    ),
+    GetPage(
+      name: Paths.Taskdetail,
+      page: () => TaskdetailPage(),
+      binding: TaskdetailBinding(),
     ),
   ];
 }

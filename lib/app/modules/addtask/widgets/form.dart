@@ -2,6 +2,7 @@
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:flui/flui.dart';
 import '../controller.dart';
 

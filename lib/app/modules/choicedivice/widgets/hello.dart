@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:flui/flui.dart';
 
 class ScanResultTile extends StatelessWidget {
@@ -184,7 +185,7 @@ class CharacteristicTile extends StatelessWidget {
                 Text('Characteristic'),
                 Text(
                     '0x${characteristic.uuid.toString().toUpperCase().substring(4, 8)}',
-                    style: Theme.of(context).textTheme.body1?.copyWith(
+                    style: Theme.of(context).textTheme.bodyText2?.copyWith(
                         color: Theme.of(context).textTheme.caption?.color))
               ],
             ),

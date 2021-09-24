@@ -4,13 +4,14 @@
  * @Author: rainstsam
  * @Date: 2021-09-10 23:34:43
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-23 06:29:40
+ * @LastEditTime: 2021-09-23 19:45:49
  */
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:get/get.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:flui/flui.dart';
 
 import 'index.dart';
@@ -237,6 +238,7 @@ class DeviceScreen extends StatelessWidget {
                   text = snapshot.data.toString().substring(21).toUpperCase();
                   break;
               }
+              // ignore: deprecated_member_use
               return FlatButton(
                   onPressed: onPressed,
                   child: Text(

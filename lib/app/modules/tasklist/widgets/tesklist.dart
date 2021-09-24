@@ -4,12 +4,10 @@
  * @Author: rainstsam
  * @Date: 2021-09-13 14:47:19
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-22 22:56:09
+ * @LastEditTime: 2021-09-23 19:42:06
  */
-import 'package:bluevoice/common/widget/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../index.dart';
 import 'taskitem.dart';
 
@@ -27,7 +25,8 @@ class TaskList extends GetView<TasklistController> {
               ),
             )
           : Column(
-              children: controller.state.tasks.asMap().entries.map<Widget>((item) {
+              children:
+                  controller.state.tasks.asMap().entries.map<Widget>((item) {
                 List<Widget> widgets = <Widget>[
                   TaskItem(
                     index: item.key,

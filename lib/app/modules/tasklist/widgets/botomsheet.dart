@@ -4,9 +4,10 @@
  * @Author: rainstsam
  * @Date: 2021-09-12 00:05:09
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-13 14:38:57
+ * @LastEditTime: 2021-09-23 19:42:23
  */
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:flui/flui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';

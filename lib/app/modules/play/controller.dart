@@ -4,23 +4,27 @@
  * @Author: rainstsam
  * @Date: 2021-09-10 23:47:48
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-23 10:00:08
+ * @LastEditTime: 2021-09-24 01:19:35
  */
 // import 'package:bluevoice/app/modules/recode/controller.dart';
 import 'dart:io';
 
 import 'package:bluevoice/app/modules/recode/util/active_codec.dart';
-import 'package:bluevoice/app/modules/recode/util/recorder_state.dart';
+import 'package:bluevoice/app/modules/recode/util/index.dart';
+// import 'package:bluevoice/app/modules/recode/util/recorder_state.dart';
 import 'package:bluevoice/app/modules/recode/util/stroge_file.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:permission_handler/permission_handler.dart';
+// import 'package:intl/date_symbol_data_local.dart';
+// import 'package:permission_handler/permission_handler.dart';
 
 import 'package:get/get.dart';
 
 import 'package:bluevoice/app/routes/app_pages.dart';
+import 'package:path/path.dart';
 
 import 'index.dart';
 
@@ -34,24 +38,34 @@ class PlayController extends GetxController {
   /// 成员变量
 
   /// 事件
+  Future<Track> createRemoteTrack() async {
+    Track track;
+    var task = Get.arguments;
+    var path = await strogeFile(task.title, suffix: 'aac');
+    // var dataBuffer = (await rootBundle.load(path)).buffer.asUint8List();
+
+    track = Track(trackPath: path, codec: Codec.aacADTS);
+    state.track = track;
+    return track;
+  }
 
   init() async {
-    if (!state.initialized) {
-      await initializeDateFormatting();
-      await UtilRecorder().init();
-      ActiveCodec().recorderModule = UtilRecorder().recorderModule;
-      ActiveCodec().setCodec(withUI: false, codec: Codec.aacADTS);
-      state.initialized = true;
-    }
-    if (!kIsWeb) {
-      var status = Permission.microphone.request();
-      status.then((stat) {
-        if (stat != PermissionStatus.granted) {
-          throw RecordingPermissionException(
-              'Microphone permission not granted');
-        }
-      });
-    }
+    // if (!state.initialized) {
+    //   await initializeDateFormatting();
+    //   await UtilRecorder().init();
+    //   ActiveCodec().recorderModule = UtilRecorder().recorderModule;
+    //   ActiveCodec().setCodec(withUI: false, codec: Codec.aacADTS);
+    //   state.initialized = true;
+    // }
+    // if (!kIsWeb) {
+    //   var status = Permission.microphone.request();
+    //   status.then((stat) {
+    //     if (stat != PermissionStatus.granted) {
+    //       throw RecordingPermissionException(
+    //           'Microphone permission not granted');
+    //     }
+    //   });
+    // }
   }
 
   void goHome() {
@@ -81,7 +95,7 @@ class PlayController extends GetxController {
     var track = new Track(trackPath: path);
     state.track = track;
 
-    print(task.toString());
+    // print(task.toString());
     // async 拉取数据
 
     // if ((await getTemporaryDirectory() != null)) {

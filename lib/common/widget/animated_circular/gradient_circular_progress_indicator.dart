@@ -70,6 +70,7 @@ class GradientCircularProgressIndicator extends StatelessWidget {
       _offset = asin(stokeWidth / (radius * 2 - stokeWidth));
     }
     var _colors = colors;
+    // ignore: unnecessary_null_comparison
     if (_colors == null) {
       Color color = Theme.of(context)
           // ignore: deprecated_member_use

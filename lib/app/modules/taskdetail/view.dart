@@ -4,7 +4,7 @@
  * @Author: rainstsam
  * @Date: 2021-09-13 19:10:34
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-13 19:13:37
+ * @LastEditTime: 2021-09-24 01:45:28
  */
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,7 +15,7 @@ import 'widgets/widgets.dart';
 class TaskdetailPage extends GetView<TaskdetailController> {
   // 内容页
   Widget _buildView() {
-    return HelloWidget();
+    return Text('in budiling ......');
   }
 
   @override
@@ -26,7 +26,7 @@ class TaskdetailPage extends GetView<TaskdetailController> {
         centerTitle: true,
         leading: IconButton(
             onPressed: controller.goHome, icon: Icon(Icons.arrow_back)),
-        title: Text("添加任务"),
+        title: Text("任务详情"),
       ),
       body: _buildView(),
     );

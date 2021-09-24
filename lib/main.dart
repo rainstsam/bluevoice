@@ -6,7 +6,7 @@
  * @Author: rainstsam
  * @Date: 2021-09-05 23:21:08
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-22 10:51:59
+ * @LastEditTime: 2021-09-23 19:41:07
  */
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
@@ -17,6 +17,7 @@ import 'app/routes/app_pages.dart';
 import 'package:bluevoice/common/service/global_config.dart';
 
 Future<void> main() async {
+  // ignore: invalid_use_of_visible_for_testing_member
   SharedPreferences.setMockInitialValues({});
   // MethodChannel mthodChannel =
   //     MethodChannel('plugins.flutter.io/shared_preferences');

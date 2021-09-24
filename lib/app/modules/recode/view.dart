@@ -4,7 +4,7 @@
  * @Author: rainstsam
  * @Date: 2021-09-10 23:49:04
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-23 09:28:52
+ * @LastEditTime: 2021-09-24 01:24:09
  */
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -38,8 +38,15 @@ class RecodePage extends GetView<RecodeController> {
                   : RecorderPlaybackController(
                       child: Column(
                       children: [
+                        Text('录制'),
+                        SoundRecorderUI(
+                          controller.state.track,
+                          // onDelete: ()=>print('del'),
+                          // onStart: ()=>print('start'),
+                          // onStopped: ()=>print('stop'),
+                        ),
                         Text(controller.state.track.trackPath),
-                        SoundRecorderUI(controller.state.track),
+
                         // Text('Recording Playback'),
                         // SoundPlayerUI.fromTrack(
                         //   controller.state.track,

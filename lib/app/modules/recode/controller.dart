@@ -6,7 +6,7 @@
  * @Author: rainstsam
  * @Date: 2021-09-10 23:49:04
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-23 07:44:16
+ * @LastEditTime: 2021-09-23 23:04:44
  */
 
 import 'dart:io';
@@ -41,6 +41,13 @@ class RecodeController extends GetxController {
 
   /// 事件
   ////// Creates an path to a temporary file.
+  handleAddFile() async {
+    //   await _incrementCounter();
+    state.count = await _readCounter();
+    state.count++; // write the variable as a string to the file
+    await (await _getLocalFile()).writeAsString('$state.count.value');
+    print(state.count.toString());
+  }
 
   init() async {
     if (!state.initialized) {
@@ -65,6 +72,32 @@ class RecodeController extends GetxController {
     Get.offNamed(Paths.Tasklist);
   }
 
+  Future<File> _getLocalFile() async {
+    // get the path to the document directory.
+    String dir = await strogeFile('counter', suffix: 'txt');
+
+    return new File(dir);
+  }
+
+  Future<int> _readCounter() async {
+    try {
+      File file = await _getLocalFile();
+      // read the variable as a string from the file.
+      String contents = await file.readAsString();
+      print(contents);
+      return int.parse(contents);
+    } on FileSystemException {
+      return 0;
+    }
+  }
+
+  // Future<Null> _incrementCounter() async {
+  //   state.count = await _readCounter();
+  //   state.count++; // write the variable as a string to the file
+  //   await (await _getLocalFile()).writeAsString('$state.count.value');
+  //   print(state.count.toString());
+  // }
+
   /// 生命周期
 
   ///在 widget 内存中分配后立即调用。
@@ -83,8 +116,9 @@ class RecodeController extends GetxController {
   @override
   void onReady() async {
     super.onReady();
+
     var task = Get.arguments;
-    var path = await strogeFile(task.title,suffix: 'aac');
+    var path = await strogeFile(task.title, suffix: 'aac');
     var track = new Track(trackPath: path);
     state.track = track;
 

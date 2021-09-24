@@ -4,13 +4,15 @@
  * @Author: rainstsam
  * @Date: 2021-09-13 23:03:43
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-13 23:56:23
+ * @LastEditTime: 2021-09-23 19:40:34
  */
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../index.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:flui/flui.dart';
 
+// ignore: must_be_immutable
 class EditTaskForm extends GetView<EdittaskController> {
   late int id;
   late String taskname;

@@ -4,9 +4,10 @@
  * @Author: rainstsam
  * @Date: 2021-09-10 23:57:45
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-18 15:14:33
+ * @LastEditTime: 2021-09-24 01:50:18
  */
 import 'package:get/get.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:system_shortcuts/system_shortcuts.dart';
 import 'package:bluevoice/app/routes/app_pages.dart';
 
@@ -28,7 +29,7 @@ class SplashController extends GetxController {
   ///在 widget 内存中分配后立即调用。
   ///你可以用它来为控制器初始化 initialize 一些东西。
   @override
-  void onInit() async{
+  void onInit() async {
     super.onInit();
     var isOpen = await SystemShortcuts.checkBluetooth;
     if (!isOpen) {
@@ -45,8 +46,12 @@ class SplashController extends GetxController {
   void onReady() async {
     super.onReady();
     await Future.delayed(Duration(seconds: 3));
+var isOpen = await SystemShortcuts.checkBluetooth;
+    if (!isOpen) {
+      SystemShortcuts.bluetooth();
+    }
     // await SystemShortcuts.
-    Get.offNamed(Paths.Scandivice);
+    Get.offNamed(Paths.Tasklist);
     // async 拉取数据
   }
 

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-08 20:57:12
- * @LastEditTime: 2021-09-22 17:56:10
+ * @LastEditTime: 2021-09-23 19:43:02
  * @LastEditors: rainstsam
  * @Description: In User Settings Edit
  * @FilePath: /todo/lib/data/repositories/task_repository.dart
@@ -24,7 +24,7 @@ class TaskRepository {
   }
 
   Future<Task> addTask(String title, {String? content, String? date}) async {
-    Task? task;
+    // Task? task;
     print(title);
     TasksCompanion tasksCompanion = TasksCompanion(
       title: Value(title),

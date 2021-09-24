@@ -4,10 +4,10 @@
  * @Author: rainstsam
  * @Date: 2021-09-13 19:10:34
  * @LastEditors: rainstsam
- * @LastEditTime: 2021-09-22 01:25:47
+ * @LastEditTime: 2021-09-23 19:50:03
  */
-import 'package:bluevoice/app/data/task_model.dart';
-import 'package:bluevoice/app/data/task_repository.dart';
+// import 'package:bluevoice/app/data/task_model.dart';
+// import 'package:bluevoice/app/data/task_repository.dart';
 import 'package:get/get.dart';
 
 import 'package:bluevoice/app/routes/app_pages.dart';
@@ -16,7 +16,7 @@ import 'index.dart';
 
 class TaskdetailController extends GetxController {
   TaskdetailController();
-  final TaskRepository _taskRepository = Get.find<TaskRepository>();
+  // final TaskRepository _taskRepository = Get.find<TaskRepository>();
 
   /// 响应式成员变量
 
