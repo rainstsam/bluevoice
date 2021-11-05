@@ -14,8 +14,10 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:get/get.dart';
 
@@ -23,7 +25,7 @@ import 'package:bluevoice/app/routes/app_pages.dart';
 
 import './util/stroge_file.dart';
 import './util/active_codec.dart';
-import './util/recorder_state.dart';
+// import './util/recorder_state.dart';
 
 import 'index.dart';
 
@@ -37,57 +39,92 @@ class RecodeController extends GetxController {
 
   /// 成员变量
 
-  // FlutterSoundRecorder? recorderModule;
+  FlutterSoundRecorder? recorderModule = FlutterSoundRecorder();
 
   /// 事件
-  ////// Creates an path to a temporary file.
-  handleAddFile() async {
-    //   await _incrementCounter();
-    state.count = await _readCounter();
-    state.count++; // write the variable as a string to the file
-    await (await _getLocalFile()).writeAsString('$state.count.value');
-    print(state.count.toString());
-  }
+  // ////// Creates an path to a temporary file.
+  // handleAddFile() async {
+  //   //   await _incrementCounter();
+  //   state.count = await _readCounter();
+  //   state.count++; // write the variable as a string to the file
+  //   await (await _getLocalFile()).writeAsString('$state.count.value');
+  //   print(state.count.toString());
+  // }
 
   init() async {
     if (!state.initialized) {
       await initializeDateFormatting();
-      await UtilRecorder().init();
-      ActiveCodec().recorderModule = UtilRecorder().recorderModule;
-      ActiveCodec().setCodec(withUI: false, codec: Codec.aacADTS);
+      // await UtilRecorder().init();
+      // recorderModule = FlutterSoundRecorder();
+      await recorderModule!
+          .openAudioSession(focus: AudioFocus.requestFocusAndDuckOthers);
+      // ActiveCodec().recorderModule = UtilRecorder().recorderModule;
+      // ActiveCodec().setCodec(withUI: false, codec: Codec.aacADTS);
       state.initialized = true;
     }
-    if (!kIsWeb) {
-      var status = Permission.microphone.request();
-      status.then((stat) {
-        if (stat != PermissionStatus.granted) {
-          throw RecordingPermissionException(
-              'Microphone permission not granted');
-        }
-      });
-    }
+    // if (!kIsWeb) {
+    //   var status = Permission.microphone.request();
+    //   status.then((stat) {
+    //     if (stat != PermissionStatus.granted) {
+    //       throw RecordingPermissionException(
+    //           'Microphone permission not granted');
+    //     }
+    //   });
+    // }
   }
 
   void goHome() {
     Get.offNamed(Paths.Tasklist);
   }
 
-  Future<File> _getLocalFile() async {
-    // get the path to the document directory.
-    String dir = await strogeFile('counter', suffix: 'txt');
+  /// `true` if we are currently recording.
+  bool get isRecording => recorderModule != null && recorderModule!.isRecording;
 
-    return new File(dir);
+  /// `true` if we are recording but currently paused.
+  bool get isPaused => recorderModule != null && recorderModule!.isPaused;
+
+  /// stops the recorder.
+  void stopRecorder() async {
+    await recorderModule!.stopRecorder();
   }
 
-  Future<int> _readCounter() async {
+  /// starts the recorder.
+  void startRecorder() async {
+    print('wqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqwqwqwwqwq');
     try {
-      File file = await _getLocalFile();
-      // read the variable as a string from the file.
-      String contents = await file.readAsString();
-      print(contents);
-      return int.parse(contents);
-    } on FileSystemException {
-      return 0;
+      var prefs = await SharedPreferences.getInstance();
+      var Source = prefs.getString('AudioSource');
+      var audioSource = AudioSource.bluetoothHFP;
+      if (Source == 'mic') {
+        audioSource = AudioSource.microphone;
+      } else if (Source == 'bluemic') {
+        audioSource = AudioSource.bluetoothHFP;
+      } else if (Source == 'blue') {
+        audioSource = AudioSource.defaultSource;
+      }
+      var task = Get.arguments;
+      var track = Track(
+          trackPath: await strogeFile(task.title, suffix: 'aac'),
+          codec: ActiveCodec().codec!);
+      // await recorderModule!.startRecorder(toFile: track.trackPath);
+      await recorderModule!
+          .startRecorder(toFile: track.trackPath, audioSource: audioSource);
+
+      print('startRecorder: $track');
+      print('audioSource: $audioSource');
+    } on Exception catch (err) {
+      print('startRecorder error: $err');
+      // await recorderModule!.stopRecorder();
+    }
+  }
+
+  /// toggles the pause/resume start of the recorder
+  void pauseResumeRecorder() {
+    assert(recorderModule!.isRecording || recorderModule!.isPaused);
+    if (recorderModule!.isPaused) {
+      recorderModule!.resumeRecorder();
+    } else {
+      recorderModule!.pauseRecorder();
     }
   }
 
@@ -148,7 +185,7 @@ class RecodeController extends GetxController {
   ///dispose 释放内存
   @override
   void dispose() {
-    super.dispose();
+    // super.dispose();
     // dispose 释放对象
   }
 }

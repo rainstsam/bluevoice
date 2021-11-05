@@ -14,11 +14,14 @@ import 'package:get/get.dart';
 class PlayItem extends GetView<RecodeController> {
   @override
   Widget build(BuildContext context) {
-    return RecorderPlaybackController(
+    return Center(
         child: Column(
       children: [
         Text('监听录制'),
-        SoundRecorderUI(controller.state.track),
+        SoundRecorderUI(
+          controller.state.track,
+          onStart: () => controller.startRecorder,
+        )
       ],
     ));
   }

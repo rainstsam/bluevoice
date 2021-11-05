@@ -35,9 +35,9 @@ class UtilRecorder {
   /// primary recording module
   FlutterSoundRecorder? recorderModule;
 
-  /// secondary recording module used to show that two recordings can occur
-  /// concurrently.
-  FlutterSoundRecorder? recorderModule_2; // Used if REENTRANCE_CONCURENCY
+  // /// secondary recording module used to show that two recordings can occur
+  // /// concurrently.
+  // FlutterSoundRecorder? recorderModule_2; // Used if REENTRANCE_CONCURENCY
 
   /// Factory ctor
   factory UtilRecorder() {
@@ -88,9 +88,10 @@ class UtilRecorder {
     try {
       /// TODO put this back iin
       /// await PlayerState().stopPlayer();
+      print('hell');
       var prefs = await SharedPreferences.getInstance();
       var Source = prefs.getString('AudioSource');
-      var audioSource;
+      var audioSource = AudioSource.bluetoothHFP;
       if (Source == 'mic') {
         audioSource = AudioSource.microphone;
       } else if (Source == 'bluemic') {
@@ -98,13 +99,16 @@ class UtilRecorder {
       } else if (Source == 'blue') {
         audioSource = AudioSource.defaultSource;
       }
-        var task = Get.arguments;
-      var track =
-          Track(trackPath: await strogeFile(task.title,suffix:'aac'), codec: ActiveCodec().codec!);
+      var task = Get.arguments;
+      var track = Track(
+          trackPath: await strogeFile(task.title, suffix: 'aac'),
+          codec: ActiveCodec().codec!);
+      // await recorderModule!.startRecorder(toFile: track.trackPath);
       await recorderModule!
           .startRecorder(toFile: track.trackPath, audioSource: audioSource);
 
-      //Log.d('startRecorder: $track');
+      print('startRecorder: $track');
+      print('audioSource: $audioSource');
 
       MediaPath().setCodecPath(ActiveCodec().codec!, track.trackPath);
     } on Exception catch (err) {

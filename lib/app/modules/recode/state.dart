@@ -24,22 +24,5 @@ class RecodeState {
   final _initialized = false.obs;
   set initialized(value) => this._initialized.value = value;
   get initialized => this._initialized.value;
-  // RxList _records = [].obs;
-  // set records(value) => this._records.value = value;
-  // get records => this._records.value;
 
-  // final _encoderSupported = false.obs;
-  // set encoderSupported(value) => this._encoderSupported.value = value;
-  // get encoderSupported => this._encoderSupported.value;
-  // final _decoderSupported = false.obs;
-  // set decoderSupported(value) => this._decoderSupported.value = value;
-  // get decoderSupported => this._decoderSupported.value;
-
-  // final _isHide = true.obs;
-  // set isHide(value) => this._isHide.value = value;
-  // get isHide => this._isHide.value;
-  // // title
-  // final _title = "".obs;
-  // set title(value) => this._title.value = value;
-  // get title => this._title.value;
 }

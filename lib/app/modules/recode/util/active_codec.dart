@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
  */
-
+import 'package:logger/logger.dart' show Level;
 import 'package:flutter_sound/flutter_sound.dart';
 
 /// Factory used to track what codec is currently selected.
@@ -37,7 +37,7 @@ class ActiveCodec {
 
   /// Set the active code for the the recording and player modules.
   void setCodec({required bool withUI, Codec? codec}) async {
-    var player = FlutterSoundPlayer();
+    var player = FlutterSoundPlayer(logLevel:Level.nothing);
     if (withUI) {
       await player.openAudioSession(
           focus: AudioFocus.requestFocusAndDuckOthers, withUI: true);
