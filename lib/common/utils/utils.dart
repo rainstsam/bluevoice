@@ -16,4 +16,5 @@ export 'iconfont.dart';
 export 'date.dart';
 export 'connect.dart';
 export 'extension/date_extension.dart';
+export 'fileutils.dart';
 // export 'sqlite_db.dart';

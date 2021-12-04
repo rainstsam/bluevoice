@@ -22,12 +22,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 
 import 'package:bluevoice/app/routes/app_pages.dart';
+import 'package:bluevoice/common/utils/fileutils.dart';
+import 'package:bluevoice/common/utils/souldutils.dart';
 
-import './util/stroge_file.dart';
-import './util/active_codec.dart';
 // import './util/recorder_state.dart';
 
 import 'index.dart';
+
+typedef Fn = void Function();
 
 class RecodeController extends GetxController {
   RecodeController();
@@ -39,110 +41,101 @@ class RecodeController extends GetxController {
 
   /// 成员变量
 
-  FlutterSoundRecorder? recorderModule = FlutterSoundRecorder();
+  FlutterSoundRecorder recorderModule = FlutterSoundRecorder();
+
+  static int _timer = 5 * 60 * 1000;
 
   /// 事件
-  // ////// Creates an path to a temporary file.
-  // handleAddFile() async {
-  //   //   await _incrementCounter();
-  //   state.count = await _readCounter();
-  //   state.count++; // write the variable as a string to the file
-  //   await (await _getLocalFile()).writeAsString('$state.count.value');
-  //   print(state.count.toString());
-  // }
 
   init() async {
+    var prefs = await SharedPreferences.getInstance();
+    var Source = prefs.getString('AudioSource');
+
+    if (Source == 'mic') {
+      state.audioSource = AudioSource.microphone;
+    } else if (Source == 'bluemic') {
+      state.audioSource = AudioSource.bluetoothHFP;
+    } else if (Source == 'blue') {
+      state.audioSource = AudioSource.defaultSource;
+    }
     if (!state.initialized) {
       await initializeDateFormatting();
-      // await UtilRecorder().init();
-      // recorderModule = FlutterSoundRecorder();
-      await recorderModule!
-          .openAudioSession(focus: AudioFocus.requestFocusAndDuckOthers);
-      // ActiveCodec().recorderModule = UtilRecorder().recorderModule;
-      // ActiveCodec().setCodec(withUI: false, codec: Codec.aacADTS);
+
+      await recorderModule.openAudioSession(focus: AudioFocus.requestFocus);
+
       state.initialized = true;
     }
-    // if (!kIsWeb) {
-    //   var status = Permission.microphone.request();
-    //   status.then((stat) {
-    //     if (stat != PermissionStatus.granted) {
-    //       throw RecordingPermissionException(
-    //           'Microphone permission not granted');
-    //     }
-    //   });
-    // }
+
+    state.basepash = await saveVoiceDirectory(Get.arguments.title);
+    if (!kIsWeb) {
+      var status = Permission.microphone.request();
+      status.then((stat) {
+        if (stat != PermissionStatus.granted) {
+          throw RecordingPermissionException(
+              'Microphone permission not granted');
+        }
+      });
+    }
+  }
+
+  Fn? onTapStartStop() {
+    if (!state.isDisabled) {
+      if (state.isRecording || state.isPaused) {
+        stopRecorder();
+      } else {
+        startRecorder();
+      }
+    }
   }
 
   void goHome() {
     Get.offNamed(Paths.Tasklist);
   }
 
-  /// `true` if we are currently recording.
-  bool get isRecording => recorderModule != null && recorderModule!.isRecording;
-
-  /// `true` if we are recording but currently paused.
-  bool get isPaused => recorderModule != null && recorderModule!.isPaused;
-
   /// stops the recorder.
   void stopRecorder() async {
-    await recorderModule!.stopRecorder();
+    await recorderModule.stopRecorder();
+
+    state.isRecording = false;
+    state.isStopped = true;
   }
 
   /// starts the recorder.
   void startRecorder() async {
-    print('wqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqwqwqwwqwq');
     try {
-      var prefs = await SharedPreferences.getInstance();
-      var Source = prefs.getString('AudioSource');
-      var audioSource = AudioSource.bluetoothHFP;
-      if (Source == 'mic') {
-        audioSource = AudioSource.microphone;
-      } else if (Source == 'bluemic') {
-        audioSource = AudioSource.bluetoothHFP;
-      } else if (Source == 'blue') {
-        audioSource = AudioSource.defaultSource;
-      }
-      var task = Get.arguments;
-      var track = Track(
-          trackPath: await strogeFile(task.title, suffix: 'aac'),
-          codec: ActiveCodec().codec!);
-      // await recorderModule!.startRecorder(toFile: track.trackPath);
-      await recorderModule!
-          .startRecorder(toFile: track.trackPath, audioSource: audioSource);
-
-      print('startRecorder: $track');
-      print('audioSource: $audioSource');
+      var fileurl = await strogeFile(state.basepash, suffix: 'aac');
+      print('fileurl is' + fileurl!);
+      await recorderModule.startRecorder(
+          toFile: fileurl, audioSource: state.audioSource);
+      state.isRecording = true;
+      state.isStopped = false;
     } on Exception catch (err) {
       print('startRecorder error: $err');
-      // await recorderModule!.stopRecorder();
+      await recorderModule.stopRecorder();
     }
   }
 
   /// toggles the pause/resume start of the recorder
-  void pauseResumeRecorder() {
-    assert(recorderModule!.isRecording || recorderModule!.isPaused);
-    if (recorderModule!.isPaused) {
-      recorderModule!.resumeRecorder();
-    } else {
-      recorderModule!.pauseRecorder();
-    }
+  void pauseRecorder() {
+    assert(recorderModule.isRecording || recorderModule.isPaused);
+
+    recorderModule.pauseRecorder();
   }
 
-  // Future<Null> _incrementCounter() async {
-  //   state.count = await _readCounter();
-  //   state.count++; // write the variable as a string to the file
-  //   await (await _getLocalFile()).writeAsString('$state.count.value');
-  //   print(state.count.toString());
-  // }
+  void resumeRecorder() {
+    assert(recorderModule.isRecording || recorderModule.isPaused);
+
+    recorderModule.resumeRecorder();
+  }
 
   /// 生命周期
 
   ///在 widget 内存中分配后立即调用。
   ///你可以用它来为控制器初始化 initialize 一些东西。
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    init();
+    await init();
     // new 对象
     // 初始静态数据
   }
@@ -152,29 +145,15 @@ class RecodeController extends GetxController {
   ///async 异步请求。
   @override
   void onReady() async {
+    var fileurl = await strogeFile(state.basepash, suffix: 'aac');
+    print('fileurl is' + fileurl!);
+    state.track = Track(trackPath: fileurl, codec: ActiveCodec().codec!);
+    // state.track = track;
     super.onReady();
-
-    var task = Get.arguments;
-    var path = await strogeFile(task.title, suffix: 'aac');
-    var track = new Track(trackPath: path);
-    state.track = track;
-
-    print(task.toString());
-    // async 拉取数据
-
-    // if ((await getTemporaryDirectory() != null)) {
-    //   Directory documentsDirectory = await getTemporaryDirectory();
-    //   defaultPath = documentsDirectory.path;
-    // }
-    // print(state.defaultPath.value);
   }
 
   ///在 [onDelete] 方法之前调用。 [onClose] 可能用于
-  ///处理控制器使用的资源。就像 closing events 一样，
-  ///或在控制器销毁之前的流。
-  ///或者处置可能造成一些内存泄漏的对象，
-  ///像 TextEditingControllers、AnimationControllers。
-  ///将一些数据保存在磁盘上也可能很有用。
+
   @override
   void onClose() {
     super.onClose();
@@ -185,7 +164,8 @@ class RecodeController extends GetxController {
   ///dispose 释放内存
   @override
   void dispose() {
-    // super.dispose();
+    super.dispose();
+    state.initialized = false;
     // dispose 释放对象
   }
 }

@@ -14,7 +14,21 @@ class PlayState {
   set track(value) => this._track.value = value;
   get track => this._track.value;
 
+    final _files = [].obs;
+  // var _tasklist = Rx<String?>(null);
+  set files(value) => _files.value = value;
+  // ignore: invalid_use_of_protected_member
+  get files => _files.value;
+
   final _initialized = false.obs;
   set initialized(value) => this._initialized.value = value;
   get initialized => this._initialized.value;
+
+
+   final _basepash = ''.obs;
+  set basepash(value) => this._basepash.value = value;
+  get basepash => this._basepash.value;
+  final _file = ''.obs;
+  set file(value) => this._file.value = value;
+  get file => this._file.value;
 }

@@ -244,6 +244,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.8.0"
+  flutter_easyloading:
+    dependency: "direct main"
+    description:
+      name: flutter_easyloading
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.3"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -251,6 +258,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.4"
+  flutter_screenutil:
+    dependency: "direct main"
+    description:
+      name: flutter_screenutil
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "5.0.1"
   flutter_slidable:
     dependency: "direct main"
     description:
@@ -264,21 +278,21 @@ packages:
       path: "plugins/flutter_sound"
       relative: true
     source: path
-    version: "8.3.12"
+    version: "8.4.1"
   flutter_sound_platform_interface:
+    dependency: "direct main"
+    description:
+      path: "plugins/flutter_sound_platform_interface"
+      relative: true
+    source: path
+    version: "8.4.1"
+  flutter_spinkit:
     dependency: transitive
     description:
-      name: flutter_sound_platform_interface
+      name: flutter_spinkit
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "8.3.12"
-  flutter_sound_web:
-    dependency: transitive
-    description:
-      name: flutter_sound_web
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "8.3.12"
+    version: "5.1.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter

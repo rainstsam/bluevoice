@@ -43,9 +43,10 @@ class TasklistPage extends GetView<TasklistController> {
             Column(
               children: <Widget>[
                 Container(
-                    height: 400,
+                    // height: 400,
                     color: Colors.grey[100],
-                    child: SingleChildScrollView(
+                    child: SizedBox(
+                      height:540,
                       child: TaskList(),
                     )),
                 FLRaisedButton(

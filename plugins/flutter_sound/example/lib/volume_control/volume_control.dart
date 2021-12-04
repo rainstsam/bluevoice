@@ -1,19 +1,20 @@
 /*
- * Copyright 2018, 2019, 2020 Dooboolab.
+ * Copyright 2018, 2019, 2020, 2021 Dooboolab.
  *
  * This file is part of Flutter-Sound.
  *
  * Flutter-Sound is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License version 3 (LGPL-V3), as published by
- * the Free Software Foundation.
+ * it under the terms of the Mozilla Public License version 2 (MPL2.0),
+ * as published by the Mozilla organization.
  *
  * Flutter-Sound is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MPL General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with Flutter-Sound.  If not, see <https://www.gnu.org/licenses/>.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 import 'dart:async';
@@ -32,7 +33,7 @@ import 'package:flutter_sound/flutter_sound.dart';
 final _exampleAudioFilePathMP3_1 =
     'https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3';
 final _exampleAudioFilePathMP3_2 =
-    'https://tau.canardoux.xyz/web_example/assets/extract/05.mp3';
+    'https://flutter-sound.canardoux.xyz/web_example/assets/extract/05.mp3';
 
 ///
 typedef Fn = void Function();

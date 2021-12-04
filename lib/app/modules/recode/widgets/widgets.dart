@@ -8,5 +8,7 @@
  */
 library widgets;
 
-export 'recoder_item.dart';
-export 'play_item.dart';
+// export 'recoder_item.dart';
+// export 'play_item.dart';
+export 'play_from_mic.dart';
+// export  'recoder.dart';

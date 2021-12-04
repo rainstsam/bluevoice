@@ -6,11 +6,14 @@
  * @LastEditors: rainstsam
  * @LastEditTime: 2021-09-24 01:25:28
  */
+import 'package:bluevoice/app/modules/play/widgets/play.dart';
+// import 'package:bluevoice/app/modules/play/widgets/simple_recorder.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'index.dart';
-import 'widgets/widgets.dart';
+import 'widgets/playlist.dart';
+// import 'widgets/widgets.dart';
 
 class PlayPage extends GetView<PlayController> {
   // 内容页
@@ -28,21 +31,17 @@ class PlayPage extends GetView<PlayController> {
       body: Container(
           child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Obx(() => controller.state.initialized
-                  ? Container(
-                      width: 400,
-                      height: 200,
-                      color: Colors.white,
-                      child: Text(controller.state.track.trackPath))
-                  // : RecorderPlaybackController(
-                  : Container(
+              child:Container(
                       child: Column(
+
                       children: [
-                        Text(controller.state.track.trackPath),
-                        PlayItem(),
-                         Text("回放"),
+                        // Text(controller.state.track.trackPath),
+                                        
+                        // SimpleRecorder (),
+                        SimplePlay(),
+                        PlayList(), 
                       ],
-                    ))))),
+                    )))),
     );
   }
 }

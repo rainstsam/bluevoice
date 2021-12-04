@@ -236,7 +236,7 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
             category: SessionCategory.playAndRecord,
             mode: SessionMode.modeDefault,
             device: AudioDevice.speaker,
-            audioFlags: outputToSpeaker | allowBlueToothA2DP | allowAirPlay)
+            audioFlags: outputToSpeaker | allowBlueTooth| allowAirPlay)
         .then((toto) {
       registerRecorder(context, this);
     });
@@ -421,7 +421,6 @@ class SoundRecorderUIState extends State<SoundRecorderUI> {
       await _recorder!.startRecorder(
         toFile: widget.audio.track.trackPath,
       );
-      print(widget.audio.track.trackPath);
       _onStarted(wasUser: true);
       // Log.d(widget.audio.track.identity);
     }

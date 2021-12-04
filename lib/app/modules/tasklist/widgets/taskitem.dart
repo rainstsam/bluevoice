@@ -122,11 +122,11 @@ class TaskItem extends GetView<TasklistController> {
             caption: '删除',
             color: Colors.red,
             icon: Icons.delete_forever,
-            onTap: () => controller.deleteTask(index),
+            onTap: () => controller.deleteTask(task.title),
             closeOnTap: false,
           ),
           IconSlideAction(
-            caption: '详情',
+            caption: '测试',
             color: Colors.indigo,
             icon: Icons.details,
             onTap: () => Get.offNamed(Paths.Taskdetail, arguments: task),

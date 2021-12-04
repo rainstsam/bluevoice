@@ -36,10 +36,16 @@ class TaskRepository {
     return await taskDao.createTask(tasksCompanion);
   }
 
-  Future<bool> deleteTask(int id) async {
-    int row = await taskDao.deleteTaskById(id);
+  Future<bool> deleteTask(String title) async {
+    int row = await taskDao.deleteTaskByTitle( title);
     return row > 0;
   }
+  //  Future<bool> deleteTask(int id) async {
+  //   int row = await taskDao.deleteTaskById(id);
+  //   return row > 0;
+  // }
+
+  
 
   Future<void> modifyTaskStatus(Task task) async {
     taskDao.modifyTask(task);

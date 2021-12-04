@@ -8,6 +8,7 @@
  */
 // import 'package:bluevoice/app/data/task_model.dart';
 // import 'package:bluevoice/app/data/task_repository.dart';
+import 'package:bluevoice/common/utils/utils.dart';
 import 'package:get/get.dart';
 
 import 'package:bluevoice/app/routes/app_pages.dart';
@@ -25,6 +26,7 @@ class TaskdetailController extends GetxController {
   /// 成员变量
 
   /// 事件
+
   // Future<TaskModel?> _load() async {
   //   try {
   //     TaskModel model = await _taskRepository.getTask(pageNum: _pageNum);
@@ -135,9 +137,12 @@ class TaskdetailController extends GetxController {
   ///导航事件，例如 snackbar、对话框或新route，或
   ///async 异步请求。
   @override
-  void onReady() {
-    super.onReady();
+  Future<void> onReady() async {
+    
+      state.basepash = await saveVoiceDirectory(Get.arguments.title);
+    var files = await getFileList(state.basepash);
     // async 拉取数据
+    super.onReady();
   }
 
   ///在 [onDelete] 方法之前调用。 [onClose] 可能用于
@@ -159,4 +164,7 @@ class TaskdetailController extends GetxController {
     super.dispose();
     // dispose 释放对象
   }
+
+  @override
+  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

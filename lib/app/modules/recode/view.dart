@@ -6,12 +6,15 @@
  * @LastEditors: rainstsam
  * @LastEditTime: 2021-09-24 01:24:09
  */
+// import 'package:bluevoice/app/modules/recode/widgets/recoder_item.dart';
+import 'package:bluevoice/app/modules/recode/widgets/simple_recorder.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/flutter_sound.dart';
+// import 'package:flutter_sound/flutter_sound.dart';
 import 'package:get/get.dart';
 // import './widgets/play_item.dart';
 // import './widgets/recoder_item.dart';
 import 'index.dart';
+import 'widgets/widgets.dart';
 // import 'widgets/widgets.dart';
 
 class RecodePage extends GetView<RecodeController> {
@@ -29,33 +32,23 @@ class RecodePage extends GetView<RecodeController> {
       body: Container(
           child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Obx(() => !controller.state.initialized
-                  ? Container(
-                      width: 0,
-                      height: 0,
-                      color: Colors.white,
-                    )
-                  : RecorderPlaybackController(
-                      child: Column(
+child: Column(
                       children: [
+                        Text('监听'),
+                        PlayFromMic(),
                         Text('录制'),
-                        SoundRecorderUI(
-                          controller.state.track,
-                          // onDelete: ()=>print('del'),
-                          // onStart: ()=>print('start'),
-                          // onStopped: ()=>print('stop'),
-                        ),
-                        Text(controller.state.track.trackPath),
+                        // Obx(() =>                         SoundRecorderUI(
+                        //     controller.state.track,
+                        //     onDelete: () => print(controller.state.track),
+                        //     onStart: ()async => controller.startRecorder,
+                        //     // onStopped: () => print('stop'),
+                        //   ),
+                        // )
+                        SimpleRecorder()
 
-                        // Text('Recording Playback'),
-                        // SoundPlayerUI.fromTrack(
-                        //   controller.state.track,
-                        //   enabled: false,
-                        //   showTitle: true,
-                        //   audioFocus: AudioFocus.requestFocusAndDuckOthers,
-                        // ),
+               
                       ],
-                    ))))),
+                    ))),
     );
   }
 }

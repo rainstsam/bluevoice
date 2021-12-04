@@ -1,9 +1,9 @@
 name: flutter_sound
-version: 8.3.12
+version: 8.4.1
 description: A complete api for audio playback and recording. Audio player, audio recorder, media player, media recorder, sound player, sound recorder.
 #author: dooboolab<dooboolab@gmail.com>
-homepage: https://tau.canardoux.xyz/readme.html
-repository: https://github.com/Canardoux/tau
+homepage: https://flutter-sound.canardoux.xyz/readme.html
+repository: https://github.com/canardoux/flutter_sound
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
@@ -21,10 +21,9 @@ dependencies:
   flutter:
     sdk: flutter
 # ============================================================================
-  # flutter_sound_platform_interface: 8.3.12
-  # flutter_sound_platform_interface: 
-  #   path: ../flutter_sound_platform_interface # Flutter Sound Dir
-  flutter_sound_web: 8.3.12
+  flutter_sound_platform_interface:
+    path: ../flutter_sound_platform_interface # Flutter Sound Dir
+  # flutter_sound_web: 8.4.1
 #    path: ../flutter_sound_web # Flutter Sound Dir
 # ============================================================================
 
@@ -33,7 +32,7 @@ dev_dependencies:
 
 
 # For information on the generic Dart part of this file, see the
-# following page: https:/www/canardoux.xyz/tau_sound/doc.dartlang.org/tools/pub/pubspec
+# following page: https:/www/flutter-sound.canardoux.xyz/doc.dartlang.org/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
@@ -44,8 +43,8 @@ flutter:
         pluginClass: FlutterSound
       ios:
         pluginClass: FlutterSound
-      web:
-        default_package: flauto_web
+      # web:
+      #   default_package: flauto_web
         ####fileName: flutter_sound_web.dart
 
 

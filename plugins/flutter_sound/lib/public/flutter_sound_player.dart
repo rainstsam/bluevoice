@@ -640,7 +640,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     SessionCategory category = SessionCategory.playAndRecord,
     SessionMode mode = SessionMode.modeDefault,
     AudioDevice device = AudioDevice.speaker,
-    int audioFlags = outputToSpeaker | allowBlueToothA2DP | allowAirPlay,
+    int audioFlags = outputToSpeaker | allowBlueTooth,
     bool withUI = false,
   }) async {
     if (_isInited != Initialized.notInitialized) {
@@ -664,7 +664,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
     AudioFocus focus = AudioFocus.requestFocusAndKeepOthers,
     SessionCategory category = SessionCategory.playAndRecord,
     SessionMode mode = SessionMode.modeDefault,
-    AudioDevice device = AudioDevice.speaker,
+    AudioDevice device = AudioDevice.blueToothA2DP,
     int audioFlags = outputToSpeaker | allowBlueToothA2DP | allowAirPlay,
     bool withUI = false,
   }) async {
@@ -1164,7 +1164,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   /// The Speaker is directely linked to the Microphone.
   /// There is no processing between the Microphone and the Speaker.
   /// If you want to process the data before playing them, actually you must define a loop between a [FlutterSoundPlayer] and a [FlutterSoundRecorder].
-  /// (Please, look to [this example](http://www.canardoux.xyz/tau_sound/doc/pages/flutter-sound/api/topics/flutter_sound_examples_stream_loop.html)).
+  /// (Please, look to [this example](http://www.canardoux.xyz/flutter_sound/doc/pages/flutter-sound/api/topics/flutter_sound_examples_stream_loop.html)).
   ///
   /// Later, we will implement the _Tau Audio Graph_ concept, which will be a more general object.
   ///
@@ -1181,7 +1181,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   ///     myPlayer.stopPlayer();
   /// ```
   Future<void> startPlayerFromMic({
-    int sampleRate = 44000, // The default value is probably a good choice.
+    int sampleRate = 16000, // The default value is probably a good choice.
     int numChannels =
         1, // 1 for monophony, 2 for stereophony (actually only monophony is supported).
   }) async {
@@ -1194,7 +1194,7 @@ class FlutterSoundPlayer implements FlutterSoundPlayerCallback {
   }
 
   Future<Duration> _startPlayerFromMic({
-    int sampleRate = 44000, // The default value is probably a good choice.
+    int sampleRate = 16000, // The default value is probably a good choice.
     int numChannels =
         1, // 1 for monophony, 2 for stereophony (actually only monophony is supported).
   }) async {

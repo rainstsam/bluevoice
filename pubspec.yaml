@@ -23,9 +23,13 @@ dependencies:
   # flutter_sound: ^8.3.12
   flutter_sound: 
     path: ./plugins/flutter_sound
+  flutter_sound_platform_interface:
+    path: ./plugins/flutter_sound_platform_interface
   completer_ex: 3.0.0
   path_provider: ^2.0.2
   date_format: 2.0.4
+  flutter_screenutil: 5.0.1
+  flutter_easyloading: 3.0.3
   pull_to_refresh: 2.0.0
   flutter: 
     sdk: flutter

@@ -91,17 +91,16 @@ class TasklistController extends GetxController {
     update();
   }
 
-  deleteTask(int index) async {
+  deleteTask(title) async {
     try {
-      var task = state.tasks[index];
-      bool success = await _taskRepository.deleteTask(task.id!);
+      bool success = await _taskRepository.deleteTask(title);
       if (success) {
-        state.tasks.removeAt(index);
-        update();
+        asyncLoadTaskList();
       }
       Get.loading();
       Get.dismiss();
       Get.offNamed(Paths.Tasklist);
+      await delDir(title);
     } catch (e) {
       print('deleteTask' + e.toString());
     }
@@ -173,7 +172,6 @@ class TasklistController extends GetxController {
       Get.offNamed(Paths.Choicedivice);
       print(3);
     }
-
   }
 
   ///dispose 释放内存

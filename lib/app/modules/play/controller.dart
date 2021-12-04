@@ -9,13 +9,12 @@
 // import 'package:bluevoice/app/modules/recode/controller.dart';
 import 'dart:io';
 
-import 'package:bluevoice/app/modules/recode/util/active_codec.dart';
-import 'package:bluevoice/app/modules/recode/util/index.dart';
+// import 'package:bluevoice/app/modules/recode/util/active_codec.dart';
+// import 'package:bluevoice/app/modules/recode/util/index.dart';
 // import 'package:bluevoice/app/modules/recode/util/recorder_state.dart';
-import 'package:bluevoice/app/modules/recode/util/stroge_file.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:bluevoice/common/utils/fileutils.dart';
+import 'package:bluevoice/common/utils/souldutils.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:flutter_sound/flutter_sound.dart';
 // import 'package:intl/date_symbol_data_local.dart';
@@ -38,10 +37,57 @@ class PlayController extends GetxController {
   /// 成员变量
 
   /// 事件
+  void setPlayfile(file) {
+    state.file = file;
+    print(file);
+  }
+
+  Future<Track?> createTrack(BuildContext context) async {
+    Track? track;
+
+    String? title;
+    if (_recordingExist(context)) {
+      /// build player from file
+
+      track = await _createPathTrack();
+      title = 'Recording from file playback';
+      track.trackTitle = title;
+      track.trackAuthor = 'By flutter_sound';
+    }
+    return track;
+  }
+
+  Future<Track?> _createBufferTrack() async {
+    Track? track;
+    // Do we want to play from buffer or from file ?
+    if (fileExists(state.file)) {
+      var dataBuffer = await makeBuffer(state.file);
+      if (dataBuffer == null) {
+        throw Exception('Unable to create the buffer');
+      }
+      track = Track(dataBuffer: dataBuffer, codec: ActiveCodec().codec!);
+    }
+    return track;
+  }
+
+  Future<Track> _createPathTrack() async {
+    Track track;
+    var audioFilePath = state.file;
+    print(audioFilePath);
+    track = Track(trackPath: audioFilePath);
+    return track;
+  }
+
+  bool _recordingExist(BuildContext context) {
+    // Do we want to play from buffer or from file ?
+    var path = state.file;
+    return (path != null && fileExists(path));
+  }
+
   Future<Track> createRemoteTrack() async {
     Track track;
-    var task = Get.arguments;
-    var path = await strogeFile(task.title, suffix: 'aac');
+    // var task = Get.arguments;
+    var path = await strogeFile(state.file, suffix: 'aac');
     // var dataBuffer = (await rootBundle.load(path)).buffer.asUint8List();
 
     track = Track(trackPath: path, codec: Codec.aacADTS);
@@ -50,26 +96,21 @@ class PlayController extends GetxController {
   }
 
   init() async {
-    // if (!state.initialized) {
-    //   await initializeDateFormatting();
-    //   await UtilRecorder().init();
-    //   ActiveCodec().recorderModule = UtilRecorder().recorderModule;
-    //   ActiveCodec().setCodec(withUI: false, codec: Codec.aacADTS);
-    //   state.initialized = true;
-    // }
-    // if (!kIsWeb) {
-    //   var status = Permission.microphone.request();
-    //   status.then((stat) {
-    //     if (stat != PermissionStatus.granted) {
-    //       throw RecordingPermissionException(
-    //           'Microphone permission not granted');
-    //     }
-    //   });
-    // }
+    state.basepash = await saveVoiceDirectory(Get.arguments.title);
+    state.files = await getFileList(state.basepash);
   }
 
   void goHome() {
     Get.offNamed(Paths.Tasklist);
+  }
+
+  void deletefile(String path) async {
+    delFile(path);
+    state.files = await getFileList(state.basepash);
+    // var filelist = state.files;
+    // filelist.remove(path);
+    // state.files = filelist;
+    // print(file);
   }
 
   /// 生命周期
@@ -90,10 +131,11 @@ class PlayController extends GetxController {
   @override
   void onReady() async {
     super.onReady();
-    var task = Get.arguments;
-    var path = await strogeFile(task.title, suffix: 'aac');
-    var track = new Track(trackPath: path);
-    state.track = track;
+    // var task = Get.arguments;
+    // var path = await strogeFile(task.title, suffix: 'aac');
+
+    // var track = new Track(trackPath: path);
+    // state.track = track;
 
     // print(task.toString());
     // async 拉取数据
