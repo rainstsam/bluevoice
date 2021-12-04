@@ -61,7 +61,7 @@ class FileItem extends GetView<PlayController> {
                 margin: EdgeInsets.symmetric(horizontal: 20),
                 
                 height: 20,
-                child: Text(file.substring(file.length - 25)),
+                child: Text(file.substring(file.length - 23)),
               ),
 
               Container(

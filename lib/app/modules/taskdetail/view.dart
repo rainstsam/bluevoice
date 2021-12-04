@@ -6,7 +6,7 @@
  * @LastEditors: rainstsam
  * @LastEditTime: 2021-09-24 01:45:28
  */
-import 'package:bluevoice/app/modules/taskdetail/widgets/recording_player.dart';
+
 import 'package:bluevoice/app/modules/taskdetail/widgets/simple_recorder.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -18,13 +18,20 @@
  */
 
 import 'dart:async';
+// import 'dart:typed_data';
 import 'package:bluevoice/app/modules/play/index.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+// import 'package:bluevoice/app/modules/play/widgets/slider.dart';
+import 'package:bluevoice/common/utils/utils.dart';
+// import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart' show Column;
+// import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
+// import 'package:flutter_sound/public/util/flutter_sound_helper.dart';
+// import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
+// import 'package:moor/moor.dart';
+// import 'package:permission_handler/permission_handler.dart';
 
 /*
  * This is an example showing how to record to a Dart Stream.
@@ -51,7 +58,7 @@ typedef _Fn = void Function();
 //const theSource = AudioSource.voiceUpLink;
 //const theSource = AudioSource.voiceDownlink;
 
-const theSource = AudioSource.microphone;
+// const theSource = AudioSource.microphone;
 
 /// Example app.
 class SimplePlay extends StatefulWidget {
@@ -61,56 +68,83 @@ class SimplePlay extends StatefulWidget {
 
 class _SimplePlayState extends State<SimplePlay> {
   final Controller = Get.put(PlayController());
-  // Codec _codec = Codec.aacADTS;
-  // String _mPath = ;
-  FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
-  FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder();
+  final FlutterSoundPlayer _mPlayer = FlutterSoundPlayer();
   bool _mPlayerIsInited = false;
-  // bool _mRecorderIsInited = true;
-  bool _mplaybackReady = true;
+  StreamSubscription? _mPlayerSubscription;
 
   @override
   void initState() {
-    _mPlayer!
-        .openAudioSession(
-      focus: AudioFocus.requestFocusAndDuckOthers,
-    )
-        .then((value) {
+    super.initState();
+    init().then((value) {
       setState(() {
         _mPlayerIsInited = true;
       });
     });
-
-    super.initState();
   }
 
   @override
   void dispose() {
-    _mPlayer!.closeAudioSession();
-    _mPlayer = null;
+    cancelPlayerSubscriptions();
+    _mPlayer.closeAudioSession();
+    super.dispose();
   }
 
-  void play() {
+  Future<void> init() async {
+    await _mPlayer.openAudioSession();
+    // await _mPlayer.setSubscriptionDuration(Duration(seconds: 0));
+    // _mPlayerSubscription = _mPlayer.onProgress!.listen((e) {
+    //   setPos(e.position.inSeconds);
+    //   setState(() {});
+    // });
+  }
+
+  void cancelPlayerSubscriptions() {
+    if (_mPlayerSubscription != null) {
+      _mPlayerSubscription!.cancel();
+      _mPlayerSubscription = null;
+    }
+  }
+
+  Future<void> seek(double d) async {
+    await _mPlayer.seekToPlayer(Duration(milliseconds: d.floor()));
+    setPos(d.floor());
+  }
+
+  void setPos(int d) {
+    if (d > Controller.state.duration) {
+      d = Controller.state.duration;
+    }
+
+    Controller.state.pos = d;
+  }
+
+  void play() async {
     print('11111111111' + Controller.state.file);
+    setPos(0);
+    var _date = await readFile(Controller.state.file);
     var _file = Controller.state.file;
-    _mPlayer!
+    var _duration = await flutterSoundHelper.duration(_file);
+    await _mPlayer.setSubscriptionDuration(Duration(milliseconds: 50));
+    _mPlayer.onProgress!.listen((e) {
+      setPos(e.position.inMilliseconds);
+      // setState(() {});
+    });
+    Controller.state.duration = _duration!.inMilliseconds;
+    _mPlayer
         .startPlayer(
-            fromURI: _file,
-            codec: Codec.aacMP4,
+            fromDataBuffer: _date,
+            // fromURI: _file,
+            codec: Codec.aacADTS,
             whenFinished: () {
               stopPlayer();
               int index = Controller.state.files.indexOf(Controller.state.file);
-              index++;              
-              if (index==Controller.state.files.length) {
-                   Controller.state.file = Controller.state.files[0];
-              }else{
+              index++;
+              if (index == Controller.state.files.length) {
+                Controller.state.file = Controller.state.files[0];
+              } else {
                 Controller.state.file = Controller.state.files[index];
                 play();
-               
               }
-              
-             
-             
             })
         .then((value) {
       setState(() {});
@@ -118,7 +152,7 @@ class _SimplePlayState extends State<SimplePlay> {
   }
 
   void stopPlayer() {
-    _mPlayer!.stopPlayer().then((value) {
+    _mPlayer.stopPlayer().then((value) {
       setState(() {});
     });
   }
@@ -129,11 +163,17 @@ class _SimplePlayState extends State<SimplePlay> {
     // if (!_mPlayerIsInited || !_mplaybackReady) {
     //   return null;
     // }
-    return _mPlayer!.isStopped ? play : stopPlayer;
+    return _mPlayer.isStopped ? play : stopPlayer;
   }
 
   @override
   Widget build(BuildContext context) {
+    var intduration = Controller.state.duration;
+    var pos = Controller.state.pos;
+    var spos = pos~/1000;
+    var sintduration = intduration ~/ 1000;
+
+    // var stream = _mPlayer!.dispositionStream()!;
     Widget makeBody() {
       return Column(
         children: [
@@ -149,14 +189,30 @@ class _SimplePlayState extends State<SimplePlay> {
                 onPressed: getPlaybackFn(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mPlayer!.isPlaying ? '停止' : '播放'),
+                child: Text(_mPlayer.isPlaying ? '停止' : '播放'),
               ),
               SizedBox(
-                width: 20,
+                width: 10,
               ),
-              Text(_mPlayer!.isPlaying
-                  ? Controller.state.file.substring(Controller.state.file.length - 25)
-                  : '未开始'),
+              _mPlayer.isPlaying
+                  ? Column(
+                      children: [
+                        Text(Controller.state.file
+                            .substring(Controller.state.file.length - 23)),
+                        Row(children: [
+                          Slider(
+                            value: pos + 0.0,
+                            min: 0.0,
+                            max: intduration + 0.0,
+                            onChanged: seek,
+                            // autofocus: true,
+                            // divisions: 100
+                          ),
+                          Text('$spos/$sintduration秒'),
+                        ]),
+                      ],
+                    )
+                  : Text('未开始'),
             ]),
           ),
         ],

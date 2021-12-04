@@ -113,6 +113,8 @@ class PlayController extends GetxController {
     // print(file);
   }
 
+ 
+
   /// 生命周期
 
   ///在 widget 内存中分配后立即调用。

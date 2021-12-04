@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
@@ -23,8 +24,8 @@ Future<String?> strogeFile(String basepath, {String? suffix}) async {
   // var millisecond = DateTime.now().millisecond.toString();
   // var data = DateTime.now().millisecondsSinceEpoch.toString();
   // var formatdata = DateTime.now().toString();
-  var data = formatDate(DateTime.now(),
-      [yyyy, "-", mm, "-", dd, "- ", HH, ":", nn, ":", ss]);
+  var data = formatDate(
+      DateTime.now(), [yyyy, "-", mm, "-", dd, "-", HH, "_", nn, "_", ss]);
   var uuid = Uuid();
   // var fileurl = '${join(basepath, year+'-'+month+ '-' + day+ '-' + hour + '：' + minute + '：' + second + '-' + millisecond)}$suffix';
   var fileurl = '${join(basepath, data)}$suffix';
@@ -49,8 +50,6 @@ Future<String> saveVoiceDirectory(String url) async {
   // var basedir = Directory(filepath);
   final dir = await getExternalStorageDirectory();
   var filepath = dir!.path;
-
-
   var file = Directory(filepath + "/" + url);
   try {
     bool exists = await file.exists();
@@ -104,4 +103,12 @@ Future delFile(String path) async {
   var dir = Directory(path);
   // final dir = Directory(path);
   dir.deleteSync(recursive: true);
+}
+
+Future<Uint8List> readFile(String path) async {
+  requestPermission();
+  var file = File(path);
+  // final dir = Directory(path);
+  Uint8List bytes = file.readAsBytesSync();
+  return bytes;
 }

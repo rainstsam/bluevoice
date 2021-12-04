@@ -28,7 +28,18 @@ class PlayState {
    final _basepash = ''.obs;
   set basepash(value) => this._basepash.value = value;
   get basepash => this._basepash.value;
+
   final _file = ''.obs;
   set file(value) => this._file.value = value;
   get file => this._file.value;
+
+  final _duration = 3.obs;
+  set duration(value) => this._duration.value = value;
+  get duration => this._duration.value;
+
+  final _pos = 0.obs;
+  set pos(value) => this._pos.value = value;
+  get pos => this._pos.value;
+
+
 }

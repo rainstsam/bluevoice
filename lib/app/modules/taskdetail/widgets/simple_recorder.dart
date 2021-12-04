@@ -198,14 +198,14 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
                 onPressed: getRecorderFn(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mRecorder!.isRecording ? 'Stop' : 'Record'),
+                child: Text(_mRecorder!.isRecording ? '停止' : '录音'),
               ),
               SizedBox(
                 width: 20,
               ),
               Text(_mRecorder!.isRecording
-                  ? 'Recording in progress'
-                  : 'Recorder is stopped'),
+                  ? '测试录音效果'
+                  : '等待测试'),
             ]),
           ),
           Container(
@@ -226,26 +226,20 @@ class _SimpleRecorderState extends State<SimpleRecorder> {
                 onPressed: getPlaybackFn(),
                 //color: Colors.white,
                 //disabledColor: Colors.grey,
-                child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
+                child: Text(_mPlayer!.isPlaying ? '停止' : '播放'),
               ),
               SizedBox(
                 width: 20,
               ),
               Text(_mPlayer!.isPlaying
-                  ? 'Playback in progress'
-                  : 'Player is stopped'),
+                  ? '测试播放效果'
+                  : '......'),
             ]),
           ),
         ],
       );
     }
 
-    return Scaffold(
-      backgroundColor: Colors.blue,
-      appBar: AppBar(
-        title: const Text('Simple Recorder'),
-      ),
-      body: makeBody(),
-    );
+    return  makeBody();
   }
 }

@@ -810,7 +810,7 @@ class PlaybarSlider extends StatefulWidget {
   PlaybarSlider(
     this.stream,
     this._seek,
-    this._sliderThemeData,
+    this._sliderThemeData, 
   );
 
   @override

@@ -33,11 +33,7 @@ class PlayPage extends GetView<PlayController> {
               padding: const EdgeInsets.all(8.0),
               child:Container(
                       child: Column(
-
                       children: [
-                        // Text(controller.state.track.trackPath),
-                                        
-                        // SimpleRecorder (),
                         SimplePlay(),
                         PlayList(), 
                       ],
