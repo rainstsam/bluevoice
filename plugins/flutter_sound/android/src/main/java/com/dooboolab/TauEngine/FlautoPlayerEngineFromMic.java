@@ -213,6 +213,7 @@ class FlautoPlayerEngineFromMic extends FlautoPlayerEngineInterface
 				tabCodec[codec.ordinal()]
 			) ;// !!!!! * 2 ???
 			AudioManager audioManager = (AudioManager) Flauto.androidContext.getSystemService(Context.AUDIO_SERVICE);
+			// audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
 			audioManager.stopBluetoothSco();
 			audioManager.startBluetoothSco();
 		recorder = new AudioRecord(

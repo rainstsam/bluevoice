@@ -91,11 +91,11 @@ class _SimplePlayState extends State<SimplePlay> {
 
   Future<void> init() async {
     await _mPlayer.openAudioSession();
-    // await _mPlayer.setSubscriptionDuration(Duration(seconds: 0));
-    // _mPlayerSubscription = _mPlayer.onProgress!.listen((e) {
-    //   setPos(e.position.inSeconds);
-    //   setState(() {});
-    // });
+    await _mPlayer.setSubscriptionDuration(Duration(milliseconds: 50));
+    _mPlayerSubscription = _mPlayer.onProgress!.listen((e) {
+      setPos(e.position.inSeconds);
+      setState(() {});
+    });
   }
 
   void cancelPlayerSubscriptions() {
@@ -114,7 +114,6 @@ class _SimplePlayState extends State<SimplePlay> {
     if (d > Controller.state.duration) {
       d = Controller.state.duration;
     }
-
     Controller.state.pos = d;
   }
 
@@ -125,34 +124,34 @@ class _SimplePlayState extends State<SimplePlay> {
     var _file = Controller.state.file;
     var _duration = await flutterSoundHelper.duration(_file);
     await _mPlayer.setSubscriptionDuration(Duration(milliseconds: 50));
-    _mPlayer.onProgress!.listen((e) {
+    _mPlayerSubscription = _mPlayer.onProgress!.listen((e) {
       setPos(e.position.inMilliseconds);
       // setState(() {});
     });
     Controller.state.duration = _duration!.inMilliseconds;
-    _mPlayer
-        .startPlayer(
-            fromDataBuffer: _date,
-            // fromURI: _file,
-            codec: Codec.aacADTS,
-            whenFinished: () {
-              stopPlayer();
-              int index = Controller.state.files.indexOf(Controller.state.file);
-              index++;
-              if (index == Controller.state.files.length) {
-                Controller.state.file = Controller.state.files[0];
-              } else {
-                Controller.state.file = Controller.state.files[index];
-                play();
-              }
-            })
-        .then((value) {
-      setState(() {});
-    });
+    await _mPlayer.startPlayer(
+        fromDataBuffer: _date,
+        // fromURI: _file,
+        codec: Codec.aacADTS,
+        whenFinished: () {
+          stopPlayer();
+          int index = Controller.state.files.indexOf(Controller.state.file);
+          index++;
+          if (index == Controller.state.files.length) {
+            Controller.state.file = Controller.state.files[0];
+          } else {
+            Controller.state.file = Controller.state.files[index];
+            play();
+          }
+        });
+    //     .then((value) {
+    //   setState(() {});
+    // });
   }
 
   void stopPlayer() {
     _mPlayer.stopPlayer().then((value) {
+      cancelPlayerSubscriptions();
       setState(() {});
     });
   }
@@ -170,7 +169,7 @@ class _SimplePlayState extends State<SimplePlay> {
   Widget build(BuildContext context) {
     var intduration = Controller.state.duration;
     var pos = Controller.state.pos;
-    var spos = pos~/1000;
+    var spos = pos ~/ 1000;
     var sintduration = intduration ~/ 1000;
 
     // var stream = _mPlayer!.dispositionStream()!;

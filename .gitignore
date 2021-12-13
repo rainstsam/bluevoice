@@ -9,7 +9,9 @@
 .buildlog/
 .history
 .svn/
-
+/.vscode
+/android/app/build
+/.dart_tool
 # IntelliJ related
 *.iml
 *.ipr
